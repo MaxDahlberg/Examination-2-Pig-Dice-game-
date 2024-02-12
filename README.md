@@ -14,11 +14,12 @@ A template for a Python development project.
 Get going
 --------------------------
 
-This is how you can work with the development environment.
+This is how you can work with the development environment of this Python project.
 
 
 
-### Check version of Python
+Check version of Python
+--------------------------
 
 Check what version of Python you have. The Makefile uses `PYTHON=python` as default.
 
@@ -39,7 +40,8 @@ Read more on [GNU make](https://www.gnu.org/software/make/manual/make.html).
 
 
 
-### Python virtual environment
+Python virtual environment
+--------------------------
 
 Install a Python virtual environment and activate it.
 
@@ -60,7 +62,8 @@ Read more on [Python venv](https://docs.python.org/3/library/venv.html).
 
 
 
-### Install the dependencies
+Install the dependencies
+--------------------------
 
 Install the PIP packages that are dependencies to the project and/or the development environment. The dependencies are documented in the `requirements.txt`.
 
@@ -78,7 +81,8 @@ Read more on [Python PIP](https://pypi.org/project/pip/).
 
 
 
-### Run the code
+Run the code
+--------------------------
 
 The example program can be started like this.
 
@@ -91,7 +95,8 @@ All code is stored below the directory `guess/`.
 
 
 
-### Run the validators
+Run the validators
+--------------------------
 
 You can run the static code validators like this. They check the sourcecode and exclude the testcode.
 
@@ -113,7 +118,23 @@ Read more on:
 
 
 
-### Run the unittests
+Codestyle with black
+--------------------------
+
+You can unify the codestyle using black. Running black will change your source code to have a codestyle according to black codestyle.
+
+```
+# Same same, different names
+make black
+make codestyle
+```
+
+Read more on [black](https://pypi.org/project/black/).
+
+
+
+Run the unittests
+--------------------------
 
 You can run the unittests like this. The testfiles are stored in the `test/` directory.
 
@@ -141,7 +162,8 @@ Read more on:
 
 
 
-### Run parts of the testsuite
+Run parts of the testsuite
+--------------------------
 
 You can also run parts of the testsuite, for examples files or methods in files.
 
@@ -161,7 +183,8 @@ python -m unittest test.test_game.TestGameClass.test_init_default_object
 
 
 
-### Remove generated files
+Remove generated files
+--------------------------
 
 You can remove all generated files by this.
 
@@ -175,28 +198,10 @@ make clean-all
 
 
 
-Optional targets
+More targets in the Makefile
 --------------------------
 
-These targets might be helpful when running your project.
+The makefile contains more targets, for example these.
 
-
-
-### Codestyle with black
-
-You can unify the codestyle using black. Running black will change your source code to have a codestyle according to black codestyle.
-
-```
-# Same same, different names
-make black
-make codestyle
-```
-
-Read more on [black](https://pypi.org/project/black/).
-
-
-
-More targets
---------------------------
-
-The Makefile contains more targets, they are however not yet tested on this directory structure.
+* `make pyreverse` to generate class and package diagrams from the code base.
+* `make doc` to generate documentation from the code.

@@ -9,7 +9,7 @@ class Dice:
             case 1:
                 print(Dice.face_1())
                 round_total = 0
-            
+
             case 2:
                 print(Dice.face_2())
                 round_total += 2
@@ -17,24 +17,23 @@ class Dice:
             case 3:
                 print(Dice.face_3())
                 round_total += 3
-            
+
             case 4:
                 print(Dice.face_4())
                 round_total += 4
-            
+
             case 5:
                 print(Dice.face_5())
                 round_total += 5
-            
+
             case 6:
                 print(Dice.face_6())
                 round_total += 6
-            
+
             case _:
                 print("Not in range")
 
         return round_total
-
 
     def face_1():
         return """╭─────────╮
@@ -83,7 +82,6 @@ class Dice:
 │  ●   ●  │
 ╰─────────╯
 """
-    
 
 
-Dice.roll_dice(round_total=0) # just here for testing of the class
+Dice.roll_dice(round_total=0)  # just here for testing of the class

@@ -1,4 +1,4 @@
-class Player():
+class Player:
     def __init__(self, name):
         self.name = name
         self.total_games = 0
@@ -16,13 +16,13 @@ class Player():
 
     def get_name(self):
         return self.name
-    
+
     def get_total_games(self):
         return self.total_games
-    
+
     def get_total_wins(self):
         return self.total_wins
-    
+
     def get_win_percent(self):
         if not self.total_games == 0:
             return self.win_percent

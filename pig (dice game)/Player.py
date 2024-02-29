@@ -3,7 +3,7 @@ class Player():
         self.name = name
         self.total_games = 0
         self.total_wins = 0
-        self.win_percent = self.total_wins / self.total_games * 100 #total games can be 0. need to ensure we dont divide with 0
+        self.win_percent = self.total_wins / self.total_games * 100
 
     def change_name(self, name):
         self.name = name
@@ -24,4 +24,5 @@ class Player():
         return self.total_wins
     
     def get_win_percent(self):
-        return self.win_percent
+        if not self.total_games == 0:
+            return self.win_percent

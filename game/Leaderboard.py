@@ -23,6 +23,3 @@ class Leaderboard:
             print(f"{'│ '}{score[0]:<15}{score[1]:<7}{'100.0':<7}{'│'}")
 
         print(f"{'╰'}{'─' * 30}{'╯'}")
-
-
-Leaderboard.print_leaderboard()

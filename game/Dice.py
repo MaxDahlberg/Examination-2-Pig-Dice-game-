@@ -2,13 +2,17 @@ import random
 
 
 class Dice:
-    def roll_dice(round_total):
+    def roll_dice(round_total, cheat):
         roll = random.randint(1, 6)
 
         match roll:
             case 1:
-                print(Dice.face_1())
-                round_total = 0
+                if not cheat:
+                    print(Dice.face_1())
+                    round_total = 0
+                    # end turn
+                else:
+                    Dice.roll_dice(round_total, cheat)
 
             case 2:
                 print(Dice.face_2())
@@ -82,6 +86,3 @@ class Dice:
 │  ●   ●  │
 ╰─────────╯
 """
-
-
-Dice.roll_dice(round_total=0)  # just here for testing of the class

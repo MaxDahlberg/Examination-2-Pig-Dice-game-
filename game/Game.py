@@ -16,15 +16,17 @@ class Game:
         keep_running = True
 
         while keep_running:
-            print(f"{'╭'}{'─' * 30}{'╮'}")
-            print(f"{'│'}{'Game total:' :>18}{game_total:^12}{'│'}")
-            print(f"{'│'}{'Round total:' :>18}{round_total:^12}{'│'}")
-            print(f"{'╰'}{'─' * 30}{'╯'}\n")
-            print("1. Roll Dice")
-            print("2. Hold")
-            print("3. Toggle Cheat")
-            print("4. Exit Game")
-            choice = input("Choice: ")
+            print(f"{'╭'}{'─' * 31}{'╮'}")
+            print(f"{'│'}{'Game total:' :>18}{game_total:^13}{'│'}")
+            print(f"{'│'}{'Round total:' :>18}{round_total:^13}{'│'}")
+            print(f"{'╰'}{'─' * 31}{'╯'}\n")
+            print(f"{'╭'}{'─' * 31}{'╮'}")
+            print(f"{'│'}{'        1. Roll Dice' :<31}{'│'}")
+            print(f"{'│'}{'        2. Hold' :<31}{'│'}")
+            print(f"{'│'}{'        3. Toggle Cheat' :<31}{'│'}")
+            print(f"{'│'}{'        4. Exit Game' :<31}{'│'}")
+            print(f"{'╰'}{'─' * 31}{'╯'}\n")
+            choice = input(">> ")
             print()
 
             match choice:

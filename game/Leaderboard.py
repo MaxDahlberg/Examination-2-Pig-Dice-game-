@@ -14,12 +14,12 @@ class Leaderboard:
 
         sorted_scores = sorted(scores.items(), key=lambda x: x[1], reverse=True)
 
-        print(f"{'╭'}{'─' * 30}{'╮'}")
-        print(f"{'│'}{'Leaderboard' :^30}{'│'}")
-        print(f"{'│'}{'─' * 30}{'│'}")
-        print(f"{'│ '}{'Name':<15}{'Wins':<7}{'Win%':<7}{'│'}")
-        print(f"{'│'}{'─' * 30}{'│'}")
+        print(f"{'╭'}{'─' * 31}{'╮'}")
+        print(f"{'│'}{'Leaderboard' :^31}{'│'}")
+        print(f"{'│'}{'─' * 31}{'│'}")
+        print(f"{'│ '}{'Name':<15}{'Wins':<8}{'Win%':<7}{'│'}")
+        print(f"{'│'}{'─' * 31}{'│'}")
         for score in sorted_scores:
-            print(f"{'│ '}{score[0]:<15}{score[1]:<7}{'100.0':<7}{'│'}")
+            print(f"{'│ '}{score[0]:<15}{score[1]:<8}{'100.0':<7}{'│'}")
 
-        print(f"{'╰'}{'─' * 30}{'╯'}")
+        print(f"{'╰'}{'─' * 31}{'╯'}")

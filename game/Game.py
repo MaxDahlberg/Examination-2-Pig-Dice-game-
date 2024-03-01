@@ -54,7 +54,6 @@ class Game:
                     keep_running = False
 
                 case _:
-                    #print("Not a valid choice")
                     print(f"{'╭' :>5}{'─' * 23}{'╮'}")
                     print(f"{'│' :>5}{'Not a valid choice' :^23}{'│'}")
                     print(f"{'╰' :>5}{'─' * 23}{'╯'}\n")

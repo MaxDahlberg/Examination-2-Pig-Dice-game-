@@ -1,5 +1,6 @@
 from Leaderboard import Leaderboard
 from Dice import Dice
+from Intelligence import Intelligence
 
 
 class Game:
@@ -14,6 +15,7 @@ class Game:
         round_total = 0
         cheat = False
         keep_running = True
+        user_type = "PLAYER"
 
         while keep_running:
             print(f"{'╭'}{'─' * 31}{'╮'}")
@@ -36,7 +38,7 @@ class Game:
                 case "2":
                     game_total += round_total
                     round_total = 0
-                    # end turn
+                    user_type = "COMPUTER"
 
                 case "3":
                     if cheat:
@@ -57,6 +59,10 @@ class Game:
                     print(f"{'╭' :>5}{'─' * 23}{'╮'}")
                     print(f"{'│' :>5}{'Not a valid choice' :^23}{'│'}")
                     print(f"{'╰' :>5}{'─' * 23}{'╯'}\n")
+
+            if user_type == "COMPUTER":
+                Intelligence.check_difficulty()
+                user_type = "PLAYER"
 
             if game_total >= 100:
                 keep_running = False

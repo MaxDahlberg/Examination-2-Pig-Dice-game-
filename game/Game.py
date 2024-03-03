@@ -12,6 +12,66 @@ class Game:
     print()
     print()
 
+
+    def rules():
+        return ("""│                                                │
+│ Each turn, a player repeatedly rolls a die     │
+│ until either a 1 is rolled or the player       │
+│ decides to "hold"                              │
+│                                                │
+│ ● If the player rolls a 1, they score nothing  │ 
+│ and it becomes the next player's turn          │
+│                                                │
+│ ● If the player rolls any other number, it is  │
+│ added to their turn total and the player's     │
+│ turn continues.                                │
+│                                                │
+│ ● If a player chooses to "hold", their turn    │
+│ total is added to their score, and it becomes  │
+│ the next player's turn.                        │
+│                                                │
+│ ● The first player to score 100 or more        │
+│ points wins.                                   │""")
+
+    def settings_menu(player):
+        keep_running = True
+
+        while keep_running:
+            print(f"{'╭'}{'─' * 31}{'╮'}")
+            print(f"{'│' :<9}{'1. Play game' :<23}{'│'}")
+            print(f"{'│' :<9}{'2. Set difficulty' :<23}{'│'}")
+            print(f"{'│' :<9}{'3. Change name' :<23}{'│'}")
+            print(f"{'│' :<9}{'4. Rules' :<23}{'│'}")
+            print(f"{'│' :<9}{'5. Sign out' :<23}{'│'}")
+            print(f"{'╰'}{'─' * 31}{'╯'}\n")
+            choice = input(">> ")
+            print()
+
+            match choice:
+                case "1":
+                    Game.game_menu(player)
+
+                case "2":
+                    pass # set difficulty
+
+                case "3":
+                    pass # change name
+                
+                case "4":
+                    print(f"{'╭'}{'─' * 48}{'╮'}")
+                    print(f"{'│'}{'RULES' :^48}{'│'}")
+                    print(Game.rules())
+                    print(f"{'╰'}{'─' * 48}{'╯'}\n")
+
+                case "5":
+                    keep_running = False
+
+                case _:
+                    print(f"{'╭' :>5}{'─' * 23}{'╮'}")
+                    print(f"{'│' :>5}{'Not a valid choice' :^23}{'│'}")
+                    print(f"{'╰' :>5}{'─' * 23}{'╯'}\n")
+
+
     def login():
         keep_running = True
         player = ""
@@ -24,7 +84,7 @@ class Game:
                 if username == user.get_name():
                     player = user
                     keep_running = False
-                    Game.game_menu(player)
+                    Game.settings_menu(player)
 
             if player == "":
                 print("Not a valid user. Try again!\n")
@@ -50,18 +110,19 @@ class Game:
             else:
                 keep_running = False
                 player = Player(username)
-                Game.game_menu(player)
+                Game.settings_menu(player)
 
     def login_menu():
         keep_running = True
 
         while keep_running:
             print(f"{'╭'}{'─' * 31}{'╮'}")
-            print(f"{'│' :<9}{'1. Login' :<23}{'│'}")
+            print(f"{'│' :<9}{'1. Sign in' :<23}{'│'}")
             print(f"{'│' :<9}{'2. Create user' :<23}{'│'}")
             print(f"{'│' :<9}{'3. Exit Game' :<23}{'│'}")
             print(f"{'╰'}{'─' * 31}{'╯'}\n")
-            choice = input(">>")
+            choice = input(">> ")
+            print()
 
             match choice:
                 case "1":

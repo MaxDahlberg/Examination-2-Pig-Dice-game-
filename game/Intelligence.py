@@ -2,8 +2,8 @@ from Dice import Dice
 
 
 class Intelligence:
-    difficulty_easy = False  # hard coded to true for now just for testing of the function before inmplementation of difficulty selection
-    difficulty_medium = True
+    difficulty_easy = True  # hard coded to true for now just for testing of the function before inmplementation of difficulty selection
+    difficulty_medium = False
     difficulty_hard = False
     round_total = 0
     game_total = 0
@@ -34,12 +34,9 @@ class Intelligence:
 
         Intelligence.game_total += Intelligence.round_total
         Intelligence.round_total = 0
-        print(Intelligence.game_total)  # temp for testing
 
     def play_computer_moves():
-        Intelligence.round_total = Dice.roll_dice(
-            Intelligence.round_total, False
-        )
+        Intelligence.round_total = Dice.roll_dice(Intelligence.round_total, False)
 
     def get_difficulty_level():
         if Intelligence.difficulty_easy:
@@ -50,7 +47,7 @@ class Intelligence:
             return "Cpu Hard"
         else:
             return "No difficulty selected"
-        
+
     def get_round_total():
         return Intelligence.round_total
 

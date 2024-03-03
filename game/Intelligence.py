@@ -1,10 +1,6 @@
 from Dice import Dice
 
 
-class rolledOne(Exception):
-    pass
-
-
 class Intelligence:
     difficulty_easy = True  # hard coded to true for now just for testing of the function before inmplementation of difficulty selection
     difficulty_medium = False

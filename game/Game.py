@@ -60,13 +60,13 @@ class Game:
                     print(f"{'│' :>5}{'Not a valid choice' :^23}{'│'}")
                     print(f"{'╰' :>5}{'─' * 23}{'╯'}\n")
 
-            if user_type == "COMPUTER":
-                Intelligence.check_difficulty()
-                user_type = "PLAYER"
-
             if game_total >= 100:
                 keep_running = False
                 print("You won!")
+
+            if user_type == "COMPUTER":
+                Intelligence.check_and_play_selected_difficulty()
+                user_type = "PLAYER"
 
 
 Game.game_menu()

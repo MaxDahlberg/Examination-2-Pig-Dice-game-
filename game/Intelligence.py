@@ -1,6 +1,10 @@
 from Dice import Dice
 
 
+class rolledOne(Exception):
+    pass
+
+
 class Intelligence:
     difficulty_easy = True  # hard coded to true for now just for testing of the function before inmplementation of difficulty selection
     difficulty_medium = False
@@ -8,7 +12,7 @@ class Intelligence:
     computer_round_total = 0
     computer_game_total = 0
 
-    def check_difficulty():
+    def check_and_play_selected_difficulty():
         if Intelligence.difficulty_easy:
             for i in range(2):
                 Intelligence.play_computer_moves()

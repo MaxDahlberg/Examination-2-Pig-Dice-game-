@@ -2,7 +2,7 @@ from Dice import Dice
 
 
 class Intelligence:
-    difficulty_easy = True  # hard coded to true for now just for testing of the function before inmplementation of difficulty selection
+    difficulty_easy = True  # Default easy
     difficulty_medium = False
     difficulty_hard = False
     round_total = 0
@@ -43,6 +43,18 @@ class Intelligence:
 
     def reset_game_total():
         Intelligence.game_total = 0
+
+    def change_difficulty(difficulty):
+        Intelligence.difficulty_easy = False
+        Intelligence.difficulty_medium = False
+        Intelligence.difficulty_hard = False
+
+        if difficulty == "EASY":
+            Intelligence.difficulty_easy = True
+        if difficulty == "MEDIUM":
+            Intelligence.difficulty_medium = True
+        if difficulty == "HARD":
+            Intelligence.difficulty_hard = True
 
     def get_difficulty_level():
         if Intelligence.difficulty_easy:

@@ -6,6 +6,36 @@ from Players import Players
 
 
 class Game:
+    def difficulty_menu():
+        keep_running = True
+
+        while keep_running:
+            print(f"{'╭'}{'─' * 31}{'╮'}")
+            print(f"{'│' :<9}{'1. Easy' :<23}{'│'}")
+            print(f"{'│' :<9}{'2. Medium' :<23}{'│'}")
+            print(f"{'│' :<9}{'3. Hard' :<23}{'│'}")
+            print(f"{'╰'}{'─' * 31}{'╯'}\n")
+            choice = input(">> ")
+            print()
+
+            match choice:
+                case "1":
+                    Intelligence.change_difficulty("EASY")
+                    keep_running = False
+
+                case "2":
+                    Intelligence.change_difficulty("MEDIUM")
+                    keep_running = False
+
+                case "3":
+                    Intelligence.change_difficulty("HARD")
+                    keep_running = False
+
+                case _:
+                    print(f"{'╭' :>5}{'─' * 23}{'╮'}")
+                    print(f"{'│' :>5}{'Not a valid choice' :^23}{'│'}")
+                    print(f"{'╰' :>5}{'─' * 23}{'╯'}\n")
+
     def rules():
         return """│                                                │
 │ Each turn, a player repeatedly rolls a die     │
@@ -46,7 +76,7 @@ class Game:
                     Game.game_menu(player)
 
                 case "2":
-                    pass  # set difficulty
+                    Game.difficulty_menu()
 
                 case "3":
                     Leaderboard.print_leaderboard()
@@ -135,6 +165,12 @@ class Game:
                     print(f"{'│' :>5}{'Not a valid choice' :^23}{'│'}")
                     print(f"{'╰' :>5}{'─' * 23}{'╯'}\n")
 
+    def reset_game_scores(player):
+        player.reset_game_total()
+        player.reset_round_total()
+        Intelligence.reset_game_total()
+        Intelligence.reset_round_total()
+
     def print_scoreboard(player):
         print(f"{'╭'}{'─' * 31}{'╮'}")
         print(
@@ -189,10 +225,7 @@ class Game:
 
                 case "4":
                     keep_running = False
-                    player.reset_game_total()
-                    player.reset_round_total()
-                    Intelligence.reset_game_total()
-                    Intelligence.reset_round_total()
+                    Game.reset_game_scores(player)
 
                 case _:
                     print(f"{'╭' :>5}{'─' * 23}{'╮'}")
@@ -201,6 +234,7 @@ class Game:
 
             if player.get_game_total() >= 100:
                 keep_running = False
+                Game.reset_game_scores(player)
                 print(f"{'╭' :>9}{'─' * 15}{'╮'}")
                 print(f"{'│' :>9}{'You Won!' :^15}{'│'}")
                 print(f"{'╰' :>9}{'─' * 15}{'╯'}")
@@ -212,6 +246,7 @@ class Game:
 
             if Intelligence.get_game_total() >= 100:
                 keep_running = False
+                Game.reset_game_scores(player)
                 print(f"{'╭' :>9}{'─' * 15}{'╮'}")
                 print(f"{'│' :>9}{'Computer Won!' :^15}{'│'}")
                 print(f"{'╰' :>9}{'─' * 15}{'╯'}")

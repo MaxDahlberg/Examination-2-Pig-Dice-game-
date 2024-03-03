@@ -10,7 +10,7 @@ class Player:
         self.name = name
 
     def update_round_total(self, round_total):
-        self.round_total += round_total
+        self.round_total = round_total
 
     def add_round_to_game_total(self):
         self.game_total += self.round_total

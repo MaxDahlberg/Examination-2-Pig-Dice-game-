@@ -6,6 +6,7 @@ from Player import Player
 
 player1 = Player("Player 1")
 
+
 class Game:
     print()
     print()
@@ -14,16 +15,14 @@ class Game:
     print()
 
     def game_menu():
-        game_total = 0
-        round_total = 0
         cheat = False
         keep_running = True
         user_type = "PLAYER"
 
         while keep_running:
             print(f"{'╭'}{'─' * 31}{'╮'}")
-            print(f"{'│'}{'Game total:' :>18}{game_total:^13}{'│'}")
-            print(f"{'│'}{'Round total:' :>18}{round_total:^13}{'│'}")
+            print(f"{'│'}{'Game total:' :>18}{player1.get_game_total():^13}{'│'}")
+            print(f"{'│'}{'Round total:' :>18}{player1.get_round_total():^13}{'│'}")
             print(f"{'╰'}{'─' * 31}{'╯'}\n")
             print(f"{'╭'}{'─' * 31}{'╮'}")
             print(f"{'│' :<9}{'1. Roll Dice' :<23}{'│'}")
@@ -36,11 +35,12 @@ class Game:
 
             match choice:
                 case "1":
-                    round_total = Dice.roll_dice(round_total, cheat)
+                    round_total = Dice.roll_dice(player1.get_round_total(), cheat)
+                    player1.update_round_total(round_total)
 
                 case "2":
-                    game_total += round_total
-                    round_total = 0
+                    player1.add_round_to_game_total()
+                    player1.reset_round_total()
                     user_type = "COMPUTER"
 
                 case "3":
@@ -63,9 +63,10 @@ class Game:
                     print(f"{'│' :>5}{'Not a valid choice' :^23}{'│'}")
                     print(f"{'╰' :>5}{'─' * 23}{'╯'}\n")
 
-            if game_total >= 100:
+            if player1.get_game_total() >= 100:
                 keep_running = False
                 print("You won!")
+                break
 
             if user_type == "COMPUTER":
                 Intelligence.check_and_play_selected_difficulty()

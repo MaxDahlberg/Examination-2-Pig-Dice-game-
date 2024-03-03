@@ -4,8 +4,7 @@ from Intelligence import Intelligence
 from Player import Player
 
 
-player1 = Player("Player 1")
-
+player1 = Player("Player 199")
 
 class Game:
     print()
@@ -21,8 +20,9 @@ class Game:
 
         while keep_running:
             print(f"{'╭'}{'─' * 31}{'╮'}")
-            print(f"{'│'}{'Game total:' :>18}{player1.get_game_total():^13}{'│'}")
-            print(f"{'│'}{'Round total:' :>18}{player1.get_round_total():^13}{'│'}")
+            print(f"{'│'}{'' :>7}{player1.get_name() :^12}{Intelligence.get_difficulty_level() :^12}{'│'}")
+            print(f"{'│'}{'Game:' :>7}{player1.get_game_total() :^12}{Intelligence.get_game_total() :^12}{'│'}")
+            print(f"{'│'}{'Round:' :>7}{player1.get_round_total() :^12}{Intelligence.get_round_total() :^12}{'│'}")
             print(f"{'╰'}{'─' * 31}{'╯'}\n")
             print(f"{'╭'}{'─' * 31}{'╮'}")
             print(f"{'│' :<9}{'1. Roll Dice' :<23}{'│'}")
@@ -36,7 +36,7 @@ class Game:
             match choice:
                 case "1":
                     round_total = Dice.roll_dice(player1.get_round_total(), cheat)
-                    player1.update_round_total(round_total)
+                    player1.update_round_total(round_total)    
 
                 case "2":
                     player1.add_round_to_game_total()

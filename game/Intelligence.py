@@ -47,7 +47,7 @@ class Intelligence:
             return "Cpu Hard"
         else:
             return "No difficulty selected"
-
+        
     def get_round_total():
         return Intelligence.round_total
 

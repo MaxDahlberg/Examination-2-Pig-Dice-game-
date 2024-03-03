@@ -4,7 +4,7 @@ from Intelligence import Intelligence
 from Player import Player
 
 
-player1 = Player("Player 199")
+player = Player("Player 199") # max name len should be 10
 
 
 class Game:
@@ -14,23 +14,27 @@ class Game:
     print()
     print()
 
+    def print_scoreboard():
+        print(f"{'╭'}{'─' * 31}{'╮'}")
+        print(
+            f"{'│'}{'' :>7}{player.get_name() :^12}{Intelligence.get_difficulty_level() :^12}{'│'}"
+            )
+        print(
+            f"{'│'}{'Game:' :>7}{player.get_game_total() :^12}{Intelligence.get_game_total() :^12}{'│'}"
+            )
+        print(
+            f"{'│'}{'Round:' :>7}{player.get_round_total() :^12}{Intelligence.get_round_total() :^12}{'│'}"
+            )
+        print(f"{'╰'}{'─' * 31}{'╯'}\n")
+
     def game_menu():
         cheat = False
         keep_running = True
         user_type = "PLAYER"
 
         while keep_running:
-            print(f"{'╭'}{'─' * 31}{'╮'}")
-            print(
-                f"{'│'}{'' :>7}{player1.get_name() :^12}{Intelligence.get_difficulty_level() :^12}{'│'}"
-            )
-            print(
-                f"{'│'}{'Game:' :>7}{player1.get_game_total() :^12}{Intelligence.get_game_total() :^12}{'│'}"
-            )
-            print(
-                f"{'│'}{'Round:' :>7}{player1.get_round_total() :^12}{Intelligence.get_round_total() :^12}{'│'}"
-            )
-            print(f"{'╰'}{'─' * 31}{'╯'}\n")
+            Game.print_scoreboard()
+
             print(f"{'╭'}{'─' * 31}{'╮'}")
             print(f"{'│' :<9}{'1. Roll Dice' :<23}{'│'}")
             print(f"{'│' :<9}{'2. Hold' :<23}{'│'}")
@@ -42,12 +46,12 @@ class Game:
 
             match choice:
                 case "1":
-                    round_total = Dice.roll_dice(player1.get_round_total(), cheat)
-                    player1.update_round_total(round_total)
+                    round_total = Dice.roll_dice(player.get_round_total(), cheat)
+                    player.update_round_total(round_total)
 
                 case "2":
-                    player1.add_round_to_game_total()
-                    player1.reset_round_total()
+                    player.add_round_to_game_total()
+                    player.reset_round_total()
                     user_type = "COMPUTER"
 
                 case "3":
@@ -70,7 +74,7 @@ class Game:
                     print(f"{'│' :>5}{'Not a valid choice' :^23}{'│'}")
                     print(f"{'╰' :>5}{'─' * 23}{'╯'}\n")
 
-            if player1.get_game_total() >= 100:
+            if player.get_game_total() >= 100:
                 keep_running = False
                 print(f"{'╭' :>9}{'─' * 15}{'╮'}")
                 print(f"{'│' :>9}{'You Won!' :^15}{'│'}")

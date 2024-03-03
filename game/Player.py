@@ -5,14 +5,13 @@ class Player:
         self.round_total = 0
         self.total_games = 0
         self.total_wins = 0
-        self.win_percent = self.total_wins / self.total_games * 100
 
     def change_name(self, name):
         self.name = name
-        
+
     def update_round_total(self, round_total):
         self.round_total += round_total
-    
+
     def add_round_to_game_total(self):
         self.game_total += self.round_total
 
@@ -30,10 +29,10 @@ class Player:
 
     def get_name(self):
         return self.name
-    
+
     def get_player_game_total(self):
         return self.game_total
-    
+
     def get_player_round_total(self):
         return self.round_total
 
@@ -45,4 +44,6 @@ class Player:
 
     def get_win_percent(self):
         if not self.total_games == 0:
-            return self.win_percent
+            return self.total_wins / self.total_games * 100
+        else:
+            return 0

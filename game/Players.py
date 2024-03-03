@@ -8,8 +8,16 @@ player4 = Player("Oskar")
 player5 = Player("Felix")
 player6 = Player("Marcus")
 
+
 class Players:
-    players = [player1, player2, player3, player4, player5, player6]  # load all players into list
+    players = [
+        player1,
+        player2,
+        player3,
+        player4,
+        player5,
+        player6,
+    ]  # load all players into list
 
     def load_players(self):
         print("Loading players")

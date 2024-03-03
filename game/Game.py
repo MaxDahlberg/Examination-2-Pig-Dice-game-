@@ -11,11 +11,11 @@ class Game:
     Leaderboard.print_leaderboard()  # just here for now to test the look of the game
     print()
     print()
-    
+
     def login():
         keep_running = True
         player = ""
-        
+
         while keep_running:
             username = input("Enter username: ")
             print()
@@ -24,12 +24,12 @@ class Game:
                 if username == user.get_name():
                     player = user
                     keep_running = False
-            
+
             if player == "":
                 print("Not a valid user. Try again!")
-        
+
         Game.game_menu(player)
-    
+
     def create_user():
         pass
 
@@ -63,13 +63,13 @@ class Game:
         print(f"{'╭'}{'─' * 31}{'╮'}")
         print(
             f"{'│'}{'' :>7}{player.get_name() :^12}{Intelligence.get_difficulty_level() :^12}{'│'}"
-            )
+        )
         print(
             f"{'│'}{'Game:' :>7}{player.get_game_total() :^12}{Intelligence.get_game_total() :^12}{'│'}"
-            )
+        )
         print(
             f"{'│'}{'Round:' :>7}{player.get_round_total() :^12}{Intelligence.get_round_total() :^12}{'│'}"
-            )
+        )
         print(f"{'╰'}{'─' * 31}{'╯'}\n")
 
     def game_menu(player):

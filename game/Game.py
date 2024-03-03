@@ -82,7 +82,8 @@ class Game:
                     Leaderboard.print_leaderboard()
 
                 case "4":
-                    pass  # change name
+                    new_username = Game.check_valid_user()
+                    player.change_name(new_username)
 
                 case "5":
                     print(f"{'╭'}{'─' * 48}{'╮'}")
@@ -115,28 +116,32 @@ class Game:
             if player == "":
                 print("Not a valid user. Try again!\n")
 
-    def create_user():
+    def check_valid_user():
         keep_running = True
 
         while keep_running:
-            new_user = True
+            new_username = True
             username = input("Enter desired username (Max 10 characters long): ")
             print()
 
             for user in Players.get_players():
                 if username == user.get_name():
-                    new_user = False
+                    new_username = False
 
             if not username or username.isspace():
                 print("Name cant be empty\n")
             elif len(username) > 10:
                 print("Name is too long. Max lenght is 10.\n")
-            elif not new_user:
+            elif not new_username:
                 print("User already exists. Try again!\n")
             else:
-                keep_running = False
-                player = Player(username)
-                Game.user_menu(player)
+                return username
+
+    def create_user():
+        username = Game.check_valid_user()
+
+        player = Player(username)
+        Game.user_menu(player)
 
     def login_menu():
         keep_running = True

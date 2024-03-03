@@ -30,10 +30,10 @@ class Player:
     def get_name(self):
         return self.name
 
-    def get_player_game_total(self):
+    def get_game_total(self):
         return self.game_total
 
-    def get_player_round_total(self):
+    def get_round_total(self):
         return self.round_total
 
     def get_total_games(self):

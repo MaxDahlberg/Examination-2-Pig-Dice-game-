@@ -1,7 +1,10 @@
 from Leaderboard import Leaderboard
 from Dice import Dice
 from Intelligence import Intelligence
+from Player import Player
 
+
+player1 = Player("Player 1")
 
 class Game:
     print()

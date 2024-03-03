@@ -24,14 +24,33 @@ class Game:
                 if username == user.get_name():
                     player = user
                     keep_running = False
+                    Game.game_menu(player)
 
             if player == "":
-                print("Not a valid user. Try again!")
-
-        Game.game_menu(player)
+                print("Not a valid user. Try again!\n")
 
     def create_user():
-        pass
+        keep_running = True
+
+        while keep_running:
+            new_user = True
+            username = input("Enter desired username (Max 10 characters long): ")
+            print()
+
+            for user in Players.get_players():
+                if username == user.get_name():
+                    new_user = False
+
+            if not username or username.isspace():
+                print("Name cant be empty\n")
+            elif len(username) > 10:
+                print("Name is too long. Max lenght is 10.\n")
+            elif not new_user:
+                print("User already exists. Try again!\n")
+            else:
+                keep_running = False
+                player = Player(username)
+                Game.game_menu(player)
 
     def login_menu():
         keep_running = True

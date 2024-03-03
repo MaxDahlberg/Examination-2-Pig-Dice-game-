@@ -38,6 +38,12 @@ class Intelligence:
     def play_computer_moves():
         Intelligence.round_total = Dice.roll_dice(Intelligence.round_total, False)
 
+    def reset_round_total():
+        Intelligence.round_total = 0
+
+    def reset_game_total():
+        Intelligence.game_total = 0
+
     def get_difficulty_level():
         if Intelligence.difficulty_easy:
             return "Cpu Easy"

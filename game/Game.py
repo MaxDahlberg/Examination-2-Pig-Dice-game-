@@ -2,9 +2,7 @@ from Leaderboard import Leaderboard
 from Dice import Dice
 from Intelligence import Intelligence
 from Player import Player
-
-
-player = Player("Player 199") # max name len should be 10
+from Players import Players
 
 
 class Game:
@@ -13,8 +11,55 @@ class Game:
     Leaderboard.print_leaderboard()  # just here for now to test the look of the game
     print()
     print()
+    
+    def login():
+        keep_running = True
+        player = ""
+        
+        while keep_running:
+            username = input("Enter username: ")
+            print()
 
-    def print_scoreboard():
+            for user in Players.get_players():
+                if username == user.get_name():
+                    player = user
+                    keep_running = False
+            
+            if player == "":
+                print("Not a valid user. Try again!")
+        
+        Game.game_menu(player)
+    
+    def create_user():
+        pass
+
+    def login_menu():
+        keep_running = True
+
+        while keep_running:
+            print(f"{'╭'}{'─' * 31}{'╮'}")
+            print(f"{'│' :<9}{'1. Login' :<23}{'│'}")
+            print(f"{'│' :<9}{'2. Create user' :<23}{'│'}")
+            print(f"{'│' :<9}{'3. Exit Game' :<23}{'│'}")
+            print(f"{'╰'}{'─' * 31}{'╯'}\n")
+            choice = input(">>")
+
+            match choice:
+                case "1":
+                    Game.login()
+
+                case "2":
+                    Game.create_user()
+
+                case "3":
+                    keep_running = False
+
+                case _:
+                    print(f"{'╭' :>5}{'─' * 23}{'╮'}")
+                    print(f"{'│' :>5}{'Not a valid choice' :^23}{'│'}")
+                    print(f"{'╰' :>5}{'─' * 23}{'╯'}\n")
+
+    def print_scoreboard(player):
         print(f"{'╭'}{'─' * 31}{'╮'}")
         print(
             f"{'│'}{'' :>7}{player.get_name() :^12}{Intelligence.get_difficulty_level() :^12}{'│'}"
@@ -27,19 +72,19 @@ class Game:
             )
         print(f"{'╰'}{'─' * 31}{'╯'}\n")
 
-    def game_menu():
+    def game_menu(player):
         cheat = False
         keep_running = True
         user_type = "PLAYER"
 
         while keep_running:
-            Game.print_scoreboard()
+            Game.print_scoreboard(player)
 
             print(f"{'╭'}{'─' * 31}{'╮'}")
             print(f"{'│' :<9}{'1. Roll Dice' :<23}{'│'}")
             print(f"{'│' :<9}{'2. Hold' :<23}{'│'}")
             print(f"{'│' :<9}{'3. Toggle Cheat' :<23}{'│'}")
-            print(f"{'│' :<9}{'4. Exit Game' :<23}{'│'}")
+            print(f"{'│' :<9}{'4. Stop game' :<23}{'│'}")
             print(f"{'╰'}{'─' * 31}{'╯'}\n")
             choice = input(">> ")
             print()
@@ -68,6 +113,10 @@ class Game:
 
                 case "4":
                     keep_running = False
+                    player.reset_game_total()
+                    player.reset_round_total()
+                    Intelligence.reset_game_total()
+                    Intelligence.reset_round_total()
 
                 case _:
                     print(f"{'╭' :>5}{'─' * 23}{'╮'}")
@@ -93,4 +142,4 @@ class Game:
                 break
 
 
-Game.game_menu()
+Game.login_menu()

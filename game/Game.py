@@ -6,15 +6,8 @@ from Players import Players
 
 
 class Game:
-    print()
-    print()
-    Leaderboard.print_leaderboard()  # just here for now to test the look of the game
-    print()
-    print()
-
-
     def rules():
-        return ("""│                                                │
+        return """│                                                │
 │ Each turn, a player repeatedly rolls a die     │
 │ until either a 1 is rolled or the player       │
 │ decides to "hold"                              │
@@ -31,18 +24,19 @@ class Game:
 │ the next player's turn.                        │
 │                                                │
 │ ● The first player to score 100 or more        │
-│ points wins.                                   │""")
+│ points wins.                                   │"""
 
-    def settings_menu(player):
+    def user_menu(player):
         keep_running = True
 
         while keep_running:
             print(f"{'╭'}{'─' * 31}{'╮'}")
             print(f"{'│' :<9}{'1. Play game' :<23}{'│'}")
             print(f"{'│' :<9}{'2. Set difficulty' :<23}{'│'}")
-            print(f"{'│' :<9}{'3. Change name' :<23}{'│'}")
-            print(f"{'│' :<9}{'4. Rules' :<23}{'│'}")
-            print(f"{'│' :<9}{'5. Sign out' :<23}{'│'}")
+            print(f"{'│' :<9}{'3. Leaderboard' :<23}{'│'}")
+            print(f"{'│' :<9}{'4. Change name' :<23}{'│'}")
+            print(f"{'│' :<9}{'5. Rules' :<23}{'│'}")
+            print(f"{'│' :<9}{'6. Sign out' :<23}{'│'}")
             print(f"{'╰'}{'─' * 31}{'╯'}\n")
             choice = input(">> ")
             print()
@@ -52,25 +46,27 @@ class Game:
                     Game.game_menu(player)
 
                 case "2":
-                    pass # set difficulty
+                    pass  # set difficulty
 
                 case "3":
-                    pass # change name
-                
+                    Leaderboard.print_leaderboard()
+
                 case "4":
+                    pass  # change name
+
+                case "5":
                     print(f"{'╭'}{'─' * 48}{'╮'}")
                     print(f"{'│'}{'RULES' :^48}{'│'}")
                     print(Game.rules())
                     print(f"{'╰'}{'─' * 48}{'╯'}\n")
 
-                case "5":
+                case "6":
                     keep_running = False
 
                 case _:
                     print(f"{'╭' :>5}{'─' * 23}{'╮'}")
                     print(f"{'│' :>5}{'Not a valid choice' :^23}{'│'}")
                     print(f"{'╰' :>5}{'─' * 23}{'╯'}\n")
-
 
     def login():
         keep_running = True
@@ -84,7 +80,7 @@ class Game:
                 if username == user.get_name():
                     player = user
                     keep_running = False
-                    Game.settings_menu(player)
+                    Game.user_menu(player)
 
             if player == "":
                 print("Not a valid user. Try again!\n")
@@ -110,7 +106,7 @@ class Game:
             else:
                 keep_running = False
                 player = Player(username)
-                Game.settings_menu(player)
+                Game.user_menu(player)
 
     def login_menu():
         keep_running = True

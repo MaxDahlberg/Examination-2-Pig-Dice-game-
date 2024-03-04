@@ -144,6 +144,7 @@ class Game:
         Game.user_menu(player)
 
     def login_menu():
+        Players.load_players()
         keep_running = True
 
         while keep_running:
@@ -164,6 +165,7 @@ class Game:
 
                 case "3":
                     keep_running = False
+                    Players.save_players()
 
                 case _:
                     print(f"{'╭' :>5}{'─' * 23}{'╮'}")

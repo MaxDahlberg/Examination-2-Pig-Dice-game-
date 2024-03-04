@@ -1,3 +1,4 @@
+import time
 from Dice import Dice
 
 
@@ -9,11 +10,14 @@ class Intelligence:
     game_total = 0
 
     def check_and_play_selected_difficulty():
+        print(f"{'╭' :>7}{'─' * 19}{'╮'}")
+        print(f"{'│' :>7}{'Computer rolling' :^19}{'│'}")
+        print(f"{'╰' :>7}{'─' * 19}{'╯'}\n")
+
         if Intelligence.difficulty_easy:
             for i in range(2):
                 Intelligence.play_computer_moves()
                 if Intelligence.round_total == 0:
-                    print("Computer rolled a 1")
                     break
 
         elif Intelligence.difficulty_medium:
@@ -37,6 +41,7 @@ class Intelligence:
 
     def play_computer_moves():
         Intelligence.round_total = Dice.roll_dice(Intelligence.round_total, False)
+        time.sleep(0.75)
 
     def reset_round_total():
         Intelligence.round_total = 0

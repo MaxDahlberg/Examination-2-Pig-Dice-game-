@@ -10,7 +10,9 @@ class Dice:
                 if not cheat:
                     print(Dice.face_1())
                     round_total = 0
-                    # end turn
+                    print(f"{'╭' :>9}{'─' * 15}{'╮'}")
+                    print(f"{'│' :>9}{'Rolled  1' :^15}{'│'}")
+                    print(f"{'╰' :>9}{'─' * 15}{'╯'}\n")
                 else:
                     round_total = Dice.roll_dice(round_total, cheat)
 

@@ -93,6 +93,7 @@ class Game:
 
                 case "6":
                     keep_running = False
+                    Intelligence.change_difficulty("EASY")
 
                 case _:
                     print(f"{'╭' :>5}{'─' * 23}{'╮'}")

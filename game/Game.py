@@ -1,6 +1,6 @@
-from Leaderboard import Leaderboard
 from Dice import Dice
 from Intelligence import Intelligence
+from Leaderboard import Leaderboard
 from Player import Player
 from Players import Players
 

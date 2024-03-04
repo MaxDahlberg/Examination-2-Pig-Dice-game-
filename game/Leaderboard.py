@@ -1,5 +1,5 @@
-from Players import Players
 from Player import Player
+from Players import Players
 
 
 class Leaderboard:

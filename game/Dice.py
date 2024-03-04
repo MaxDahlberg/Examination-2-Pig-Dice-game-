@@ -12,7 +12,7 @@ class Dice:
                     round_total = 0
                     # end turn
                 else:
-                    Dice.roll_dice(round_total, cheat)
+                    round_total = Dice.roll_dice(round_total, cheat)
 
             case 2:
                 print(Dice.face_2())

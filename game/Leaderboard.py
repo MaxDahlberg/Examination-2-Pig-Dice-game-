@@ -1,16 +1,13 @@
+from Players import Players
+from Player import Player
+
+
 class Leaderboard:
     def print_leaderboard():
-        # for player in players.get_players
-        # player.get_name player.get_score
-        player_name = ["Filip", "Liam", "Oliver", "Oskar", "Felix", "Marcus"]
-        player_score = [3, 7, 3, 421, 34, 1]
-        index = 0
         scores = {}
 
-        for name in player_name:
-            score = player_score[index]
-            index += 1
-            scores.update({name: score})
+        for player in Players.get_players():
+            scores.update({player.get_name(): player.get_total_wins()})
 
         sorted_scores = sorted(scores.items(), key=lambda x: x[1], reverse=True)
 
@@ -19,8 +16,13 @@ class Leaderboard:
         print(f"{'│'}{'─' * 31}{'│'}")
         print(f"{'│ '}{'Name':<15}{'Wins':<8}{'Win%':<7}{'│'}")
         print(f"{'│'}{'─' * 31}{'│'}")
+
         for score in sorted_scores:
-            print(f"{'│ '}{score[0]:<15}{score[1]:<8}{'100.0':<7}{'│'}")
+            for player in Players.get_players():
+                if score[0] == player.get_name():
+                    print(
+                        f"{'│ '}{score[0]:<15}{score[1]:<8}{player.get_win_percent():<7.1f}{'│'}"
+                    )
 
         print(f"{'╰'}{'─' * 31}{'╯'}")
         print()

@@ -56,7 +56,7 @@ class Dice:
 """
 
     def face_3():
-        return f"""           ╭─────────╮
+        return """           ╭─────────╮
            │  ●      │
            │    ●    │
            │      ●  │

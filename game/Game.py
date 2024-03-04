@@ -141,6 +141,7 @@ class Game:
         username = Game.check_valid_user()
 
         player = Player(username)
+        Players.add_player(player)
         Game.user_menu(player)
 
     def login_menu():
@@ -232,6 +233,7 @@ class Game:
 
                 case "4":
                     keep_running = False
+                    player.add_total_game()
                     Game.reset_game_scores(player)
 
                 case _:
@@ -245,6 +247,8 @@ class Game:
                 print(f"{'╭' :>9}{'─' * 15}{'╮'}")
                 print(f"{'│' :>9}{'You Won!' :^15}{'│'}")
                 print(f"{'╰' :>9}{'─' * 15}{'╯'}")
+                player.add_total_game()
+                player.add_win()
                 break
 
             if user_type == "COMPUTER":
@@ -257,6 +261,7 @@ class Game:
                 print(f"{'╭' :>9}{'─' * 15}{'╮'}")
                 print(f"{'│' :>9}{'Computer Won!' :^15}{'│'}")
                 print(f"{'╰' :>9}{'─' * 15}{'╯'}")
+                player.add_total_game()
                 break
 
 

@@ -213,6 +213,8 @@ class Game:
                 case "1":
                     round_total = Dice.roll_dice(player.get_round_total(), cheat)
                     player.update_round_total(round_total)
+                    if round_total == 0:
+                        user_type = "COMPUTER"
 
                 case "2":
                     player.add_round_to_game_total()

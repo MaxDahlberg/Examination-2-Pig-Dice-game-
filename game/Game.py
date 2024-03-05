@@ -1,10 +1,10 @@
 """Module with all menus and actions that happen during the game."""
 
-from Dice import Dice
-from Intelligence import Intelligence
-from Leaderboard import Leaderboard
-from Player import Player
-from Players import Players
+from dice import Dice
+from intelligence import Intelligence
+from leaderboard import Leaderboard
+from player import Player
+from players import Players
 
 
 class Game:
@@ -196,7 +196,7 @@ class Game:
         """Outputs the scoreboard."""
         print(f"{'╭'}{'─' * 31}{'╮'}")
         print(
-            f"""{'│'}{'' :>7}{player.get_name() :^12}{Intelligence.get_difficulty_level() :^12}{'│'}"""
+            f"{'│'}{'' :>7}{player.get_name() :^12}{Intelligence.get_difficulty_level() :^12}{'│'}"
         )
         print(
             f"{'│'}{'Game:' :>7}{player.get_game_total() :^12}{Intelligence.get_game_total() :^12}{'│'}"

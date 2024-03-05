@@ -1,7 +1,7 @@
 """Module for the computer player."""
 
 import time
-from Dice import Dice
+from dice import Dice
 
 
 class Intelligence:

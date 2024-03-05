@@ -1,7 +1,7 @@
 """Module for creating and priting the games leaderboard."""
 
-from Player import Player
-from Players import Players
+from player import Player
+from players import Players
 
 
 class Leaderboard:

@@ -32,14 +32,12 @@ class Intelligence:
             while Intelligence.round_total < 12:
                 Intelligence.play_computer_moves()
                 if Intelligence.round_total == 0:
-                    print("Computer rolled a 1")
                     break
 
         elif Intelligence.difficulty_hard:
             while Intelligence.round_total < 25:
                 Intelligence.play_computer_moves()
                 if Intelligence.round_total == 0:
-                    print("Computer rolled a 1")
                     break
         else:
             print("No difficulty chosen")

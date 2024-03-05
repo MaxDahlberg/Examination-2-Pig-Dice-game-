@@ -1,5 +1,6 @@
 """Module with all menus and actions that happen during the game."""
 
+import cmd
 from dice import Dice
 from intelligence import Intelligence
 from leaderboard import Leaderboard
@@ -7,8 +8,16 @@ from player import Player
 from players import Players
 
 
-class Game:
+class Game(cmd.Cmd):
     """Class with all menus and actions that happen during the game."""
+
+    def do_start(self, _):
+        """Start the game"""
+        Game.login_menu()
+
+    def do_exit(self, _):
+        """Leave the game."""
+        return True
 
     def difficulty_menu():
         """Menu for difficulty selection."""
@@ -179,6 +188,7 @@ class Game:
                 case "3":
                     keep_running = False
                     Players.save_players()
+                    print('Type "exit" to quit\n\nType "start" to start\n')
 
                 case _:
                     print(f"{'╭' :>5}{'─' * 23}{'╮'}")

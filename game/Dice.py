@@ -1,8 +1,18 @@
+"""Module for rolling and priting of dice."""
+
 import random
 
 
 class Dice:
+    """Class that rolls and prints dice."""
+
     def roll_dice(round_total, cheat):
+        """
+        Gemerates a random number in the range 1 - 6.
+        Then displays the rolled number and updates the total score.
+        Also checkes if cheat is enabled and rerolls the dice if
+        a 1 is rolled with cheat enabled.
+        """
         roll = random.randint(1, 6)
 
         match roll:
@@ -42,6 +52,7 @@ class Dice:
         return round_total
 
     def face_1():
+        """Get dice face 1."""
         return """           ╭─────────╮
            │         │
            │    ●    │
@@ -50,6 +61,7 @@ class Dice:
 """
 
     def face_2():
+        """Get dice face 2."""
         return """           ╭─────────╮
            │  ●      │
            │         │
@@ -58,6 +70,7 @@ class Dice:
 """
 
     def face_3():
+        """Get dice face 3."""
         return """           ╭─────────╮
            │  ●      │
            │    ●    │
@@ -66,6 +79,7 @@ class Dice:
 """
 
     def face_4():
+        """Get dice face 4."""
         return """           ╭─────────╮
            │  ●   ●  │
            │         │
@@ -74,6 +88,7 @@ class Dice:
 """
 
     def face_5():
+        """Get dice face 5."""
         return """           ╭─────────╮
            │  ●   ●  │
            │    ●    │
@@ -82,6 +97,7 @@ class Dice:
 """
 
     def face_6():
+        """Get dice face 6."""
         return """           ╭─────────╮
            │  ●   ●  │
            │  ●   ●  │

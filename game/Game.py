@@ -1,3 +1,5 @@
+"""Module with all menus and actions that happen during the game."""
+
 from Dice import Dice
 from Intelligence import Intelligence
 from Leaderboard import Leaderboard
@@ -6,7 +8,10 @@ from Players import Players
 
 
 class Game:
+    """Class with all menus and actions that happen during the game."""
+
     def difficulty_menu():
+        """Menu for difficulty selection."""
         keep_running = True
 
         while keep_running:
@@ -37,12 +42,13 @@ class Game:
                     print(f"{'╰' :>5}{'─' * 23}{'╯'}\n")
 
     def rules():
+        """Get rules of the game."""
         return """│                                                │
 │ Each turn, a player repeatedly rolls a die     │
 │ until either a 1 is rolled or the player       │
 │ decides to "hold"                              │
 │                                                │
-│ ● If the player rolls a 1, they score nothing  │ 
+│ ● If the player rolls a 1, they score nothing  │
 │ and it becomes the next player's turn          │
 │                                                │
 │ ● If the player rolls any other number, it is  │
@@ -57,6 +63,7 @@ class Game:
 │ points wins.                                   │"""
 
     def user_menu(player):
+        """Menu for all user actions."""
         keep_running = True
 
         while keep_running:
@@ -101,6 +108,7 @@ class Game:
                     print(f"{'╰' :>5}{'─' * 23}{'╯'}\n")
 
     def login():
+        """Menu for login that checks if user exists."""
         keep_running = True
         player = ""
 
@@ -118,6 +126,7 @@ class Game:
                 print("Not a valid user. Try again!\n")
 
     def check_valid_user():
+        """Checks if a desired username is within the rules and not already in use."""
         keep_running = True
 
         while keep_running:
@@ -139,6 +148,7 @@ class Game:
                 return username
 
     def create_user():
+        """Creates a new player."""
         username = Game.check_valid_user()
 
         player = Player(username)
@@ -146,6 +156,7 @@ class Game:
         Game.user_menu(player)
 
     def login_menu():
+        """Menu for sign in and user creation."""
         Players.load_players()
         keep_running = True
 
@@ -175,15 +186,17 @@ class Game:
                     print(f"{'╰' :>5}{'─' * 23}{'╯'}\n")
 
     def reset_game_scores(player):
+        """Resets computer and players game score."""
         player.reset_game_total()
         player.reset_round_total()
         Intelligence.reset_game_total()
         Intelligence.reset_round_total()
 
     def print_scoreboard(player):
+        """Outputs the scoreboard."""
         print(f"{'╭'}{'─' * 31}{'╮'}")
         print(
-            f"{'│'}{'' :>7}{player.get_name() :^12}{Intelligence.get_difficulty_level() :^12}{'│'}"
+            f"""{'│'}{'' :>7}{player.get_name() :^12}{Intelligence.get_difficulty_level() :^12}{'│'}"""
         )
         print(
             f"{'│'}{'Game:' :>7}{player.get_game_total() :^12}{Intelligence.get_game_total() :^12}{'│'}"
@@ -194,6 +207,7 @@ class Game:
         print(f"{'╰'}{'─' * 31}{'╯'}\n")
 
     def game_menu(player):
+        """Menu used during gameplay and all actions needed during the game."""
         cheat = False
         keep_running = True
         user_type = "PLAYER"

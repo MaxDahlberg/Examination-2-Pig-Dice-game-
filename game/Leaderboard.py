@@ -1,9 +1,14 @@
+"""Module for creating and priting the games leaderboard."""
+
 from Player import Player
 from Players import Players
 
 
 class Leaderboard:
+    """Class for creating and priting the games leaderboard."""
+
     def print_leaderboard():
+        """Creates and prints the leaderboard."""
         scores = {}
 
         for player in Players.get_players():

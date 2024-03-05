@@ -3,6 +3,7 @@ from Game import Game
 
 class Main:
     def main():
+        """Execute the main program."""
         Game()
 
 

@@ -1,5 +1,5 @@
 import unittest
-from game.player import Player
+from player import Player
 
 class TestPlayerClass(unittest.TestCase):
     """Test init the player object."""

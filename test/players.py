@@ -1,5 +1,6 @@
 """Module for keeping player statistics between runtimes."""
 
+import os
 import pickle
 
 
@@ -10,13 +11,14 @@ class Players:
 
     def load_players():
         """Load players from a file."""
-        try:
-            with open("players.bin", "rb") as players_file:
-                Players.players = pickle.load(players_file)
-        except FileExistsError:
-            with open("players.bin", "wb") as players_file:
-                pass
-            Players.load_players()
+        if os.path.exists("players.bin"):
+            try:
+                with open("players.bin", "rb") as players_file:
+                    Players.players = pickle.load(players_file)
+            except EOFError:
+                    Players.players = []
+        else:
+            Players.players = []
 
     def save_players():
         """Save players in a file."""

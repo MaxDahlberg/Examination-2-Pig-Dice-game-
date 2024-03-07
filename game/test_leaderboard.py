@@ -36,5 +36,6 @@ class TestLeaderboardClass(unittest.TestCase):
 
         mock_print.assert_has_calls(expected_output, any_order=False)
 
+
 if __name__ == "__main__":
     unittest.main()

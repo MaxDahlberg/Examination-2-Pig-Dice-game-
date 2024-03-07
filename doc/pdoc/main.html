@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
 <meta name="generator" content="pdoc 0.10.0" />
 <title>main API documentation</title>
-<meta name="description" content="Lets play a game of &#34;Guess my number&#34; …" />
+<meta name="description" content="Executes the program" />
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
 <link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
@@ -22,40 +22,30 @@
 <h1 class="title">Module <code>main</code></h1>
 </header>
 <section id="section-intro">
-<p>Lets play a game of "Guess my number".</p>
-<p>I will be thinking af a number between 1 and 100.
-You shall try to guess the number.</p>
-<p>I will let you know if your guess is lower or higher than
-the number that I am thinking of.</p>
-<p>You have 5 guesses. Then you loose.</p>
+<p>Executes the program</p>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
+<pre><code class="python">&#34;&#34;&#34;Executes the program&#34;&#34;&#34;
 
-&#34;&#34;&#34;
-Lets play a game of &#34;Guess my number&#34;.
+import cmd
+from game import Game
 
-I will be thinking af a number between 1 and 100.
-You shall try to guess the number.
 
-I will let you know if your guess is lower or higher than
-the number that I am thinking of.
+class Main(cmd.Cmd):
+    def do_start(self, _):
+        &#34;&#34;&#34;Start the game&#34;&#34;&#34;
+        Game.login_menu()
 
-You have 5 guesses. Then you loose.
-
-&#34;&#34;&#34;
-
-import shell
-
+    def do_exit(self, _):
+        &#34;&#34;&#34;Leave the game.&#34;&#34;&#34;
+        return True
 
 def main():
     &#34;&#34;&#34;Execute the main program.&#34;&#34;&#34;
-    print(__doc__)
-    shell.Shell().cmdloop()
-
+    print(&#39;&#34;start&#34; to start the game\n\n&#34;exit&#34; to exit\n&#39;)
+    Main().cmdloop()
 
 if __name__ == &#34;__main__&#34;:
     main()</code></pre>
@@ -79,13 +69,85 @@ if __name__ == &#34;__main__&#34;:
 </summary>
 <pre><code class="python">def main():
     &#34;&#34;&#34;Execute the main program.&#34;&#34;&#34;
-    print(__doc__)
-    shell.Shell().cmdloop()</code></pre>
+    print(&#39;&#34;start&#34; to start the game\n\n&#34;exit&#34; to exit\n&#39;)
+    Main().cmdloop()</code></pre>
 </details>
 </dd>
 </dl>
 </section>
 <section>
+<h2 class="section-title" id="header-classes">Classes</h2>
+<dl>
+<dt id="main.Main"><code class="flex name class">
+<span>class <span class="ident">Main</span></span>
+<span>(</span><span>completekey='tab', stdin=None, stdout=None)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>A simple framework for writing line-oriented command interpreters.</p>
+<p>These are often useful for test harnesses, administrative tools, and
+prototypes that will later be wrapped in a more sophisticated interface.</p>
+<p>A Cmd instance or subclass instance is a line-oriented interpreter
+framework.
+There is no good reason to instantiate Cmd itself; rather,
+it's useful as a superclass of an interpreter class you define yourself
+in order to inherit Cmd's methods and encapsulate action methods.</p>
+<p>Instantiate a line-oriented interpreter framework.</p>
+<p>The optional argument 'completekey' is the readline name of a
+completion key; it defaults to the Tab key. If completekey is
+not None and the readline module is available, command completion
+is done automatically. The optional arguments stdin and stdout
+specify alternate input and output file objects; if not specified,
+sys.stdin and sys.stdout are used.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">class Main(cmd.Cmd):
+    def do_start(self, _):
+        &#34;&#34;&#34;Start the game&#34;&#34;&#34;
+        Game.login_menu()
+
+    def do_exit(self, _):
+        &#34;&#34;&#34;Leave the game.&#34;&#34;&#34;
+        return True</code></pre>
+</details>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>cmd.Cmd</li>
+</ul>
+<h3>Methods</h3>
+<dl>
+<dt id="main.Main.do_exit"><code class="name flex">
+<span>def <span class="ident">do_exit</span></span>(<span>self, _)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Leave the game.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def do_exit(self, _):
+    &#34;&#34;&#34;Leave the game.&#34;&#34;&#34;
+    return True</code></pre>
+</details>
+</dd>
+<dt id="main.Main.do_start"><code class="name flex">
+<span>def <span class="ident">do_start</span></span>(<span>self, _)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Start the game</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def do_start(self, _):
+    &#34;&#34;&#34;Start the game&#34;&#34;&#34;
+    Game.login_menu()</code></pre>
+</details>
+</dd>
+</dl>
+</dd>
+</dl>
 </section>
 </article>
 <nav id="sidebar">
@@ -97,6 +159,17 @@ if __name__ == &#34;__main__&#34;:
 <li><h3><a href="#header-functions">Functions</a></h3>
 <ul class="">
 <li><code><a title="main.main" href="#main.main">main</a></code></li>
+</ul>
+</li>
+<li><h3><a href="#header-classes">Classes</a></h3>
+<ul>
+<li>
+<h4><code><a title="main.Main" href="#main.Main">Main</a></code></h4>
+<ul class="">
+<li><code><a title="main.Main.do_exit" href="#main.Main.do_exit">do_exit</a></code></li>
+<li><code><a title="main.Main.do_start" href="#main.Main.do_start">do_start</a></code></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>

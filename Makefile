@@ -76,7 +76,7 @@ lint: flake8 pylint
 #
 black:
 	@$(call MESSAGE,$@)
-	 $(PYTHON) -m black game/ test/
+	 $(PYTHON) -m black game/
 
 codestyle: black
 
@@ -86,13 +86,17 @@ codestyle: black
 #
 unittest:
 	@$(call MESSAGE,$@)
-	 $(PYTHON) -m unittest discover
+	cd game; \
+	$(PYTHON) -m unittest discover
+	cd ..
 
 coverage:
 	@$(call MESSAGE,$@)
-	coverage run -m unittest discover
-	coverage html
-	coverage report -m
+	cd game; \
+	coverage run -m unittest discover; \
+	coverage html; \
+	coverage report -m; \
+	cd..
 
 test: lint coverage
 
@@ -104,12 +108,20 @@ test: lint coverage
 pydoc:
 	@$(call MESSAGE,$@)
 	install -d doc/pydoc
-	$(PYTHON) -m pydoc -w guess/*.py
+	$(PYTHON) -m pydoc -w game/*.py
 	mv *.html doc/pydoc
 
 pdoc:
 	@$(call MESSAGE,$@)
-	pdoc --force --html --output-dir doc/pdoc guess/*.py
+	cd game; \
+	pdoc --html dice --output-dir doc/pdoc; \
+	pdoc --html game --output-dir doc/pdoc; \
+	pdoc --html intelligence --output-dir doc/pdoc; \
+	pdoc --html leaderboard --output-dir doc/pdoc; \
+	pdoc --html main --output-dir doc/pdoc; \
+	pdoc --html player --output-dir doc/pdoc; \
+	pdoc --html players --output-dir doc/pdoc; \
+	cd ..
 
 pyreverse:
 	@$(call MESSAGE,$@)

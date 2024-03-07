@@ -1,8 +1,10 @@
 import unittest
 from player import Player
 
+
 class TestPlayerClass(unittest.TestCase):
     """Test init the player object."""
+
     def test_init_player_object(self):
         result = Player("Test_init")
         expected = Player
@@ -12,7 +14,7 @@ class TestPlayerClass(unittest.TestCase):
         """Test change the name."""
         test_player = Player("Test_name")
         test_player.change_name("Test_name_change")
-        
+
         result = test_player.get_name()
         expected = "Test_name_change"
 
@@ -38,7 +40,7 @@ class TestPlayerClass(unittest.TestCase):
 
         self.assertEqual(total_before, 0)
         self.assertEqual(total_after, total_before + 20)
-    
+
     def test_reset_round_total(self):
         """Test reset the total round score."""
         test_player = Player("Test")
@@ -49,7 +51,7 @@ class TestPlayerClass(unittest.TestCase):
 
         self.assertEqual(total_before, 20)
         self.assertEqual(total_after, 0)
-    
+
     def test_reset_game_total(self):
         """Test reset the total game score."""
         test_player = Player("Test")
@@ -126,14 +128,13 @@ class TestPlayerClass(unittest.TestCase):
         expected = 1
 
         self.assertEqual(result, expected)
-        
 
     def test_get_win_percent(self):
         """Test get win % if total games are not 0."""
         test_player = Player("Test")
         test_0_result = test_player.get_win_percent()
         test_0_expected = 0
-        
+
         test_player.add_win()
         test_player.add_total_game()
         test_100_result = test_player.get_win_percent()

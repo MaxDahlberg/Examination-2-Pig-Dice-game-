@@ -3,55 +3,66 @@ import io
 from unittest.mock import patch
 from dice import Dice
 
+
 class TestDiceClass(unittest.TestCase):
     @patch("sys.stdout", new_callable=io.StringIO)
     def test_roll_dice(self, mock_stdout):
         """Testing rolling of dice with and without cheat enabled"""
         for i in range(100):
-            Dice.roll_dice(0 , True)
-            expected_outputs = [Dice.face_2() + "\n", Dice.face_3() + "\n", Dice.face_4() + "\n", Dice.face_5() + "\n", Dice.face_6() + "\n"]
+            Dice.roll_dice(0, True)
+            expected_outputs = [
+                Dice.face_2() + "\n",
+                Dice.face_3() + "\n",
+                Dice.face_4() + "\n",
+                Dice.face_5() + "\n",
+                Dice.face_6() + "\n",
+            ]
             self.assertIn(mock_stdout.getvalue(), expected_outputs)
             mock_stdout.seek(0)
             mock_stdout.truncate(0)
 
         for i in range(100):
-            round_total = Dice.roll_dice(0 , True)
+            round_total = Dice.roll_dice(0, True)
             output = mock_stdout.getvalue()
 
             if output == Dice.face_2() + "\n":
                 if round_total == 2:
                     correct_round_total = True
-            
+
             if output == Dice.face_3() + "\n":
                 if round_total == 3:
                     correct_round_total = True
-            
+
             if output == Dice.face_4() + "\n":
                 if round_total == 4:
                     correct_round_total = True
-            
+
             if output == Dice.face_5() + "\n":
                 if round_total == 5:
                     correct_round_total = True
-            
+
             if output == Dice.face_6() + "\n":
                 if round_total == 6:
                     correct_round_total = True
-            
+
             self.assertTrue(correct_round_total)
             mock_stdout.seek(0)
-            mock_stdout.truncate(0) 
+            mock_stdout.truncate(0)
 
         for i in range(100):
-            round_total = Dice.roll_dice(0 , False)
+            round_total = Dice.roll_dice(0, False)
             output = mock_stdout.getvalue()
-            if output == Dice.face_1() + "\n        ╭───────────────╮\n        │   Rolled  1   │\n        ╰───────────────╯\n\n":
+            if (
+                output
+                == Dice.face_1()
+                + "\n        ╭───────────────╮\n        │   Rolled  1   │\n        ╰───────────────╯\n\n"
+            ):
                 if round_total == 0:
                     correct_round_total = True
 
             self.assertTrue(correct_round_total)
             mock_stdout.seek(0)
-            mock_stdout.truncate(0) 
+            mock_stdout.truncate(0)
             break
 
     def test_face_1(self):
@@ -119,6 +130,7 @@ class TestDiceClass(unittest.TestCase):
            ╰─────────╯
 """
         self.assertEqual(result, expected)
+
 
 if __name__ == "__main__":
     unittest.main()

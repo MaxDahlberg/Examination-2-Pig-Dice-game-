@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
 <meta name="generator" content="pdoc 0.10.0" />
 <title>game API documentation</title>
-<meta name="description" content="Guess the number I am thinking of." />
+<meta name="description" content="Module with all menus and actions that happen during the game." />
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/sanitize.min.css" integrity="sha256-PK9q560IAAa6WVRRh76LtCaI8pjTJ2z11v0miyNNjrs=" crossorigin>
 <link rel="preload stylesheet" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/10up-sanitize.css/11.0.1/typography.min.css" integrity="sha256-7l/o7C8jubJiy74VsKTidCy1yBkRtiUGbVkYBylBqUg=" crossorigin>
 <link rel="stylesheet preload" as="style" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.1.1/styles/github.min.css" crossorigin>
@@ -22,66 +22,295 @@
 <h1 class="title">Module <code>game</code></h1>
 </header>
 <section id="section-intro">
-<p>Guess the number I am thinking of.</p>
+<p>Module with all menus and actions that happen during the game.</p>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
+<pre><code class="python">&#34;&#34;&#34;Module with all menus and actions that happen during the game.&#34;&#34;&#34;
 
-&#34;&#34;&#34;Guess the number I am thinking of.&#34;&#34;&#34;
+import cmd
+from dice import Dice
+from intelligence import Intelligence
+from leaderboard import Leaderboard
+from player import Player
+from players import Players
 
-import random
 
+class Game(cmd.Cmd):
+    &#34;&#34;&#34;Class with all menus and actions that happen during the game.&#34;&#34;&#34;
 
-class Game:
-    &#34;&#34;&#34;Example of dice class.&#34;&#34;&#34;
+    def difficulty_menu():
+        &#34;&#34;&#34;Menu for difficulty selection.&#34;&#34;&#34;
+        keep_running = True
 
-    low_number = 1
-    high_number = 100
-    the_number = None
+        while keep_running:
+            print(f&#34;{&#39;╭&#39;}{&#39;─&#39; * 31}{&#39;╮&#39;}&#34;)
+            print(f&#34;{&#39;│&#39; :&lt;9}{&#39;1. Easy&#39; :&lt;23}{&#39;│&#39;}&#34;)
+            print(f&#34;{&#39;│&#39; :&lt;9}{&#39;2. Medium&#39; :&lt;23}{&#39;│&#39;}&#34;)
+            print(f&#34;{&#39;│&#39; :&lt;9}{&#39;3. Hard&#39; :&lt;23}{&#39;│&#39;}&#34;)
+            print(f&#34;{&#39;╰&#39;}{&#39;─&#39; * 31}{&#39;╯&#39;}\n&#34;)
+            choice = input(&#34;&gt;&gt; &#34;)
+            print()
 
-    def __init__(self):
-        &#34;&#34;&#34;Init the object.&#34;&#34;&#34;
-        random.seed()
+            match choice:
+                case &#34;1&#34;:
+                    Intelligence.change_difficulty(&#34;EASY&#34;)
+                    keep_running = False
 
-    def start(self):
-        &#34;&#34;&#34;Start the game and randomize a new number.&#34;&#34;&#34;
-        self.the_number = random.randint(self.low_number, self.high_number)
+                case &#34;2&#34;:
+                    Intelligence.change_difficulty(&#34;MEDIUM&#34;)
+                    keep_running = False
 
-    def cheat(self):
-        &#34;&#34;&#34;Get the number.&#34;&#34;&#34;
-        return self.the_number
+                case &#34;3&#34;:
+                    Intelligence.change_difficulty(&#34;HARD&#34;)
+                    keep_running = False
 
-    def low(self):
-        &#34;&#34;&#34;Get the lowest number possible.&#34;&#34;&#34;
-        return self.low_number
+                case _:
+                    print(f&#34;{&#39;╭&#39; :&gt;5}{&#39;─&#39; * 23}{&#39;╮&#39;}&#34;)
+                    print(f&#34;{&#39;│&#39; :&gt;5}{&#39;Not a valid choice&#39; :^23}{&#39;│&#39;}&#34;)
+                    print(f&#34;{&#39;╰&#39; :&gt;5}{&#39;─&#39; * 23}{&#39;╯&#39;}\n&#34;)
 
-    def high(self):
-        &#34;&#34;&#34;Get the highest number possible.&#34;&#34;&#34;
-        return self.high_number
+    def rules():
+        &#34;&#34;&#34;Get rules of the game.&#34;&#34;&#34;
+        return &#34;&#34;&#34;│                                                │
+│ Each turn, a player repeatedly rolls a die     │
+│ until either a 1 is rolled or the player       │
+│ decides to &#34;hold&#34;                              │
+│                                                │
+│ ● If the player rolls a 1, they score nothing  │
+│ and it becomes the next player&#39;s turn          │
+│                                                │
+│ ● If the player rolls any other number, it is  │
+│ added to their turn total and the player&#39;s     │
+│ turn continues.                                │
+│                                                │
+│ ● If a player chooses to &#34;hold&#34;, their turn    │
+│ total is added to their score, and it becomes  │
+│ the next player&#39;s turn.                        │
+│                                                │
+│ ● The first player to score 100 or more        │
+│ points wins.                                   │&#34;&#34;&#34;
 
-    def guess(self, a_number):
-        &#34;&#34;&#34;
-        Check it the guess is correct, higher or lower than the actual number.
+    def user_menu(player):
+        &#34;&#34;&#34;Menu for all user actions.&#34;&#34;&#34;
+        keep_running = True
 
-        Raise an exception if the number is out of range.
-        Raise an exception if the number is not an integer.
-        &#34;&#34;&#34;
-        if not isinstance(a_number, int):
-            raise TypeError(&#34;The number should be an integer.&#34;)
+        while keep_running:
+            print(f&#34;{&#39;╭&#39;}{&#39;─&#39; * 31}{&#39;╮&#39;}&#34;)
+            print(f&#34;{&#39;│&#39; :&lt;9}{&#39;1. Play game&#39; :&lt;23}{&#39;│&#39;}&#34;)
+            print(f&#34;{&#39;│&#39; :&lt;9}{&#39;2. Set difficulty&#39; :&lt;23}{&#39;│&#39;}&#34;)
+            print(f&#34;{&#39;│&#39; :&lt;9}{&#39;3. Leaderboard&#39; :&lt;23}{&#39;│&#39;}&#34;)
+            print(f&#34;{&#39;│&#39; :&lt;9}{&#39;4. Change name&#39; :&lt;23}{&#39;│&#39;}&#34;)
+            print(f&#34;{&#39;│&#39; :&lt;9}{&#39;5. Rules&#39; :&lt;23}{&#39;│&#39;}&#34;)
+            print(f&#34;{&#39;│&#39; :&lt;9}{&#39;6. Sign out&#39; :&lt;23}{&#39;│&#39;}&#34;)
+            print(f&#34;{&#39;╰&#39;}{&#39;─&#39; * 31}{&#39;╯&#39;}\n&#34;)
+            choice = input(&#34;&gt;&gt; &#34;)
+            print()
 
-        if not self.low_number &lt;= a_number &lt;= self.high_number:
-            raise ValueError(&#34;The number is higher/lower than max/min value.&#34;)
+            match choice:
+                case &#34;1&#34;:
+                    Game.game_menu(player)
 
-        msg = &#34;Too Low&#34;
-        if a_number == self.the_number:
-            msg = &#34;Correct&#34;
-        elif a_number &gt; self.the_number:
-            msg = &#34;Too High&#34;
+                case &#34;2&#34;:
+                    Game.difficulty_menu()
 
-        return msg</code></pre>
+                case &#34;3&#34;:
+                    Leaderboard.print_leaderboard()
+
+                case &#34;4&#34;:
+                    new_username = Game.check_valid_user()
+                    player.change_name(new_username)
+
+                case &#34;5&#34;:
+                    print(f&#34;{&#39;╭&#39;}{&#39;─&#39; * 48}{&#39;╮&#39;}&#34;)
+                    print(f&#34;{&#39;│&#39;}{&#39;RULES&#39; :^48}{&#39;│&#39;}&#34;)
+                    print(Game.rules())
+                    print(f&#34;{&#39;╰&#39;}{&#39;─&#39; * 48}{&#39;╯&#39;}\n&#34;)
+
+                case &#34;6&#34;:
+                    keep_running = False
+                    Intelligence.change_difficulty(&#34;EASY&#34;)
+
+                case _:
+                    print(f&#34;{&#39;╭&#39; :&gt;5}{&#39;─&#39; * 23}{&#39;╮&#39;}&#34;)
+                    print(f&#34;{&#39;│&#39; :&gt;5}{&#39;Not a valid choice&#39; :^23}{&#39;│&#39;}&#34;)
+                    print(f&#34;{&#39;╰&#39; :&gt;5}{&#39;─&#39; * 23}{&#39;╯&#39;}\n&#34;)
+
+    def login():
+        &#34;&#34;&#34;Menu for login that checks if user exists.&#34;&#34;&#34;
+        keep_running = True
+        player = &#34;&#34;
+
+        while keep_running:
+            username = input(&#34;Enter username: &#34;)
+            print()
+
+            for user in Players.get_players():
+                if username == user.get_name():
+                    player = user
+                    keep_running = False
+                    Game.user_menu(player)
+
+            if player == &#34;&#34;:
+                print(&#34;Not a valid user. Try again!\n&#34;)
+
+    def check_valid_user():
+        &#34;&#34;&#34;Checks if a desired username is within the rules and not already in use.&#34;&#34;&#34;
+        keep_running = True
+
+        while keep_running:
+            new_username = True
+            username = input(&#34;Enter desired username (Max 10 characters long): &#34;)
+            print()
+
+            for user in Players.get_players():
+                if username == user.get_name():
+                    new_username = False
+
+            if not username or username.isspace():
+                print(&#34;Name cant be empty\n&#34;)
+            elif len(username) &gt; 10:
+                print(&#34;Name is too long. Max lenght is 10.\n&#34;)
+            elif not new_username:
+                print(&#34;User already exists. Try again!\n&#34;)
+            else:
+                return username
+
+    def create_user():
+        &#34;&#34;&#34;Creates a new player.&#34;&#34;&#34;
+        username = Game.check_valid_user()
+
+        player = Player(username)
+        Players.add_player(player)
+        Game.user_menu(player)
+
+    def login_menu():
+        &#34;&#34;&#34;Menu for sign in and user creation.&#34;&#34;&#34;
+        Players.load_players()
+        keep_running = True
+
+        while keep_running:
+            print(f&#34;{&#39;╭&#39;}{&#39;─&#39; * 31}{&#39;╮&#39;}&#34;)
+            print(f&#34;{&#39;│&#39; :&lt;9}{&#39;1. Sign in&#39; :&lt;23}{&#39;│&#39;}&#34;)
+            print(f&#34;{&#39;│&#39; :&lt;9}{&#39;2. Create user&#39; :&lt;23}{&#39;│&#39;}&#34;)
+            print(f&#34;{&#39;│&#39; :&lt;9}{&#39;3. Exit Game&#39; :&lt;23}{&#39;│&#39;}&#34;)
+            print(f&#34;{&#39;╰&#39;}{&#39;─&#39; * 31}{&#39;╯&#39;}\n&#34;)
+            choice = input(&#34;&gt;&gt; &#34;)
+            print()
+
+            match choice:
+                case &#34;1&#34;:
+                    Game.login()
+
+                case &#34;2&#34;:
+                    Game.create_user()
+
+                case &#34;3&#34;:
+                    keep_running = False
+                    Players.save_players()
+                    print(&#39;Type &#34;exit&#34; to quit\n\nType &#34;start&#34; to start\n&#39;)
+
+                case _:
+                    print(f&#34;{&#39;╭&#39; :&gt;5}{&#39;─&#39; * 23}{&#39;╮&#39;}&#34;)
+                    print(f&#34;{&#39;│&#39; :&gt;5}{&#39;Not a valid choice&#39; :^23}{&#39;│&#39;}&#34;)
+                    print(f&#34;{&#39;╰&#39; :&gt;5}{&#39;─&#39; * 23}{&#39;╯&#39;}\n&#34;)
+
+    def reset_game_scores(player):
+        &#34;&#34;&#34;Resets computer and players game score.&#34;&#34;&#34;
+        player.reset_game_total()
+        player.reset_round_total()
+        Intelligence.reset_game_total()
+        Intelligence.reset_round_total()
+
+    def print_scoreboard(player):
+        &#34;&#34;&#34;Outputs the scoreboard.&#34;&#34;&#34;
+        print(f&#34;{&#39;╭&#39;}{&#39;─&#39; * 31}{&#39;╮&#39;}&#34;)
+        print(
+            f&#34;{&#39;│&#39;}{&#39;&#39; :&gt;7}{player.get_name() :^12}{Intelligence.get_difficulty_level() :^12}{&#39;│&#39;}&#34;
+        )
+        print(
+            f&#34;{&#39;│&#39;}{&#39;Game:&#39; :&gt;7}{player.get_game_total() :^12}{Intelligence.get_game_total() :^12}{&#39;│&#39;}&#34;
+        )
+        print(
+            f&#34;{&#39;│&#39;}{&#39;Round:&#39; :&gt;7}{player.get_round_total() :^12}{Intelligence.get_round_total() :^12}{&#39;│&#39;}&#34;
+        )
+        print(f&#34;{&#39;╰&#39;}{&#39;─&#39; * 31}{&#39;╯&#39;}\n&#34;)
+
+    def game_menu(player):
+        &#34;&#34;&#34;Menu used during gameplay and all actions needed during the game.&#34;&#34;&#34;
+        cheat = False
+        keep_running = True
+        user_type = &#34;PLAYER&#34;
+
+        while keep_running:
+            Game.print_scoreboard(player)
+
+            print(f&#34;{&#39;╭&#39;}{&#39;─&#39; * 31}{&#39;╮&#39;}&#34;)
+            print(f&#34;{&#39;│&#39; :&lt;9}{&#39;1. Roll Dice&#39; :&lt;23}{&#39;│&#39;}&#34;)
+            print(f&#34;{&#39;│&#39; :&lt;9}{&#39;2. Hold&#39; :&lt;23}{&#39;│&#39;}&#34;)
+            print(f&#34;{&#39;│&#39; :&lt;9}{&#39;3. Toggle Cheat&#39; :&lt;23}{&#39;│&#39;}&#34;)
+            print(f&#34;{&#39;│&#39; :&lt;9}{&#39;4. Stop game&#39; :&lt;23}{&#39;│&#39;}&#34;)
+            print(f&#34;{&#39;╰&#39;}{&#39;─&#39; * 31}{&#39;╯&#39;}\n&#34;)
+            choice = input(&#34;&gt;&gt; &#34;)
+            print()
+
+            match choice:
+                case &#34;1&#34;:
+                    round_total = Dice.roll_dice(player.get_round_total(), cheat)
+                    player.update_round_total(round_total)
+                    if round_total == 0:
+                        user_type = &#34;COMPUTER&#34;
+
+                case &#34;2&#34;:
+                    player.add_round_to_game_total()
+                    player.reset_round_total()
+                    user_type = &#34;COMPUTER&#34;
+
+                case &#34;3&#34;:
+                    if cheat:
+                        print(f&#34;{&#39;╭&#39; :&gt;9}{&#39;─&#39; * 15}{&#39;╮&#39;}&#34;)
+                        print(f&#34;{&#39;│&#39; :&gt;9}{&#39;Cheat off&#39; :^15}{&#39;│&#39;}&#34;)
+                        print(f&#34;{&#39;╰&#39; :&gt;9}{&#39;─&#39; * 15}{&#39;╯&#39;}\n&#34;)
+                        cheat = False
+                    else:
+                        print(f&#34;{&#39;╭&#39; :&gt;9}{&#39;─&#39; * 15}{&#39;╮&#39;}&#34;)
+                        print(f&#34;{&#39;│&#39; :&gt;9}{&#39;Cheat on&#39; :^15}{&#39;│&#39;}&#34;)
+                        print(f&#34;{&#39;╰&#39; :&gt;9}{&#39;─&#39; * 15}{&#39;╯&#39;}\n&#34;)
+                        cheat = True
+
+                case &#34;4&#34;:
+                    keep_running = False
+                    player.add_total_game()
+                    Game.reset_game_scores(player)
+
+                case _:
+                    print(f&#34;{&#39;╭&#39; :&gt;5}{&#39;─&#39; * 23}{&#39;╮&#39;}&#34;)
+                    print(f&#34;{&#39;│&#39; :&gt;5}{&#39;Not a valid choice&#39; :^23}{&#39;│&#39;}&#34;)
+                    print(f&#34;{&#39;╰&#39; :&gt;5}{&#39;─&#39; * 23}{&#39;╯&#39;}\n&#34;)
+
+            if player.get_game_total() &gt;= 100:
+                keep_running = False
+                Game.reset_game_scores(player)
+                print(f&#34;{&#39;╭&#39; :&gt;9}{&#39;─&#39; * 15}{&#39;╮&#39;}&#34;)
+                print(f&#34;{&#39;│&#39; :&gt;9}{&#39;You Won!&#39; :^15}{&#39;│&#39;}&#34;)
+                print(f&#34;{&#39;╰&#39; :&gt;9}{&#39;─&#39; * 15}{&#39;╯&#39;}&#34;)
+                player.add_total_game()
+                player.add_win()
+                break
+
+            if user_type == &#34;COMPUTER&#34;:
+                Intelligence.check_and_play_selected_difficulty()
+                user_type = &#34;PLAYER&#34;
+
+            if Intelligence.get_game_total() &gt;= 100:
+                keep_running = False
+                Game.reset_game_scores(player)
+                print(f&#34;{&#39;╭&#39; :&gt;9}{&#39;─&#39; * 15}{&#39;╮&#39;}&#34;)
+                print(f&#34;{&#39;│&#39; :&gt;9}{&#39;Computer Won!&#39; :^15}{&#39;│&#39;}&#34;)
+                print(f&#34;{&#39;╰&#39; :&gt;9}{&#39;─&#39; * 15}{&#39;╯&#39;}&#34;)
+                player.add_total_game()
+                break</code></pre>
 </details>
 </section>
 <section>
@@ -95,166 +324,672 @@ class Game:
 <dl>
 <dt id="game.Game"><code class="flex name class">
 <span>class <span class="ident">Game</span></span>
+<span>(</span><span>completekey='tab', stdin=None, stdout=None)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Example of dice class.</p>
-<p>Init the object.</p></div>
+<div class="desc"><p>Class with all menus and actions that happen during the game.</p>
+<p>Instantiate a line-oriented interpreter framework.</p>
+<p>The optional argument 'completekey' is the readline name of a
+completion key; it defaults to the Tab key. If completekey is
+not None and the readline module is available, command completion
+is done automatically. The optional arguments stdin and stdout
+specify alternate input and output file objects; if not specified,
+sys.stdin and sys.stdout are used.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">class Game:
-    &#34;&#34;&#34;Example of dice class.&#34;&#34;&#34;
+<pre><code class="python">class Game(cmd.Cmd):
+    &#34;&#34;&#34;Class with all menus and actions that happen during the game.&#34;&#34;&#34;
 
-    low_number = 1
-    high_number = 100
-    the_number = None
+    def difficulty_menu():
+        &#34;&#34;&#34;Menu for difficulty selection.&#34;&#34;&#34;
+        keep_running = True
 
-    def __init__(self):
-        &#34;&#34;&#34;Init the object.&#34;&#34;&#34;
-        random.seed()
+        while keep_running:
+            print(f&#34;{&#39;╭&#39;}{&#39;─&#39; * 31}{&#39;╮&#39;}&#34;)
+            print(f&#34;{&#39;│&#39; :&lt;9}{&#39;1. Easy&#39; :&lt;23}{&#39;│&#39;}&#34;)
+            print(f&#34;{&#39;│&#39; :&lt;9}{&#39;2. Medium&#39; :&lt;23}{&#39;│&#39;}&#34;)
+            print(f&#34;{&#39;│&#39; :&lt;9}{&#39;3. Hard&#39; :&lt;23}{&#39;│&#39;}&#34;)
+            print(f&#34;{&#39;╰&#39;}{&#39;─&#39; * 31}{&#39;╯&#39;}\n&#34;)
+            choice = input(&#34;&gt;&gt; &#34;)
+            print()
 
-    def start(self):
-        &#34;&#34;&#34;Start the game and randomize a new number.&#34;&#34;&#34;
-        self.the_number = random.randint(self.low_number, self.high_number)
+            match choice:
+                case &#34;1&#34;:
+                    Intelligence.change_difficulty(&#34;EASY&#34;)
+                    keep_running = False
 
-    def cheat(self):
-        &#34;&#34;&#34;Get the number.&#34;&#34;&#34;
-        return self.the_number
+                case &#34;2&#34;:
+                    Intelligence.change_difficulty(&#34;MEDIUM&#34;)
+                    keep_running = False
 
-    def low(self):
-        &#34;&#34;&#34;Get the lowest number possible.&#34;&#34;&#34;
-        return self.low_number
+                case &#34;3&#34;:
+                    Intelligence.change_difficulty(&#34;HARD&#34;)
+                    keep_running = False
 
-    def high(self):
-        &#34;&#34;&#34;Get the highest number possible.&#34;&#34;&#34;
-        return self.high_number
+                case _:
+                    print(f&#34;{&#39;╭&#39; :&gt;5}{&#39;─&#39; * 23}{&#39;╮&#39;}&#34;)
+                    print(f&#34;{&#39;│&#39; :&gt;5}{&#39;Not a valid choice&#39; :^23}{&#39;│&#39;}&#34;)
+                    print(f&#34;{&#39;╰&#39; :&gt;5}{&#39;─&#39; * 23}{&#39;╯&#39;}\n&#34;)
 
-    def guess(self, a_number):
-        &#34;&#34;&#34;
-        Check it the guess is correct, higher or lower than the actual number.
+    def rules():
+        &#34;&#34;&#34;Get rules of the game.&#34;&#34;&#34;
+        return &#34;&#34;&#34;│                                                │
+│ Each turn, a player repeatedly rolls a die     │
+│ until either a 1 is rolled or the player       │
+│ decides to &#34;hold&#34;                              │
+│                                                │
+│ ● If the player rolls a 1, they score nothing  │
+│ and it becomes the next player&#39;s turn          │
+│                                                │
+│ ● If the player rolls any other number, it is  │
+│ added to their turn total and the player&#39;s     │
+│ turn continues.                                │
+│                                                │
+│ ● If a player chooses to &#34;hold&#34;, their turn    │
+│ total is added to their score, and it becomes  │
+│ the next player&#39;s turn.                        │
+│                                                │
+│ ● The first player to score 100 or more        │
+│ points wins.                                   │&#34;&#34;&#34;
 
-        Raise an exception if the number is out of range.
-        Raise an exception if the number is not an integer.
-        &#34;&#34;&#34;
-        if not isinstance(a_number, int):
-            raise TypeError(&#34;The number should be an integer.&#34;)
+    def user_menu(player):
+        &#34;&#34;&#34;Menu for all user actions.&#34;&#34;&#34;
+        keep_running = True
 
-        if not self.low_number &lt;= a_number &lt;= self.high_number:
-            raise ValueError(&#34;The number is higher/lower than max/min value.&#34;)
+        while keep_running:
+            print(f&#34;{&#39;╭&#39;}{&#39;─&#39; * 31}{&#39;╮&#39;}&#34;)
+            print(f&#34;{&#39;│&#39; :&lt;9}{&#39;1. Play game&#39; :&lt;23}{&#39;│&#39;}&#34;)
+            print(f&#34;{&#39;│&#39; :&lt;9}{&#39;2. Set difficulty&#39; :&lt;23}{&#39;│&#39;}&#34;)
+            print(f&#34;{&#39;│&#39; :&lt;9}{&#39;3. Leaderboard&#39; :&lt;23}{&#39;│&#39;}&#34;)
+            print(f&#34;{&#39;│&#39; :&lt;9}{&#39;4. Change name&#39; :&lt;23}{&#39;│&#39;}&#34;)
+            print(f&#34;{&#39;│&#39; :&lt;9}{&#39;5. Rules&#39; :&lt;23}{&#39;│&#39;}&#34;)
+            print(f&#34;{&#39;│&#39; :&lt;9}{&#39;6. Sign out&#39; :&lt;23}{&#39;│&#39;}&#34;)
+            print(f&#34;{&#39;╰&#39;}{&#39;─&#39; * 31}{&#39;╯&#39;}\n&#34;)
+            choice = input(&#34;&gt;&gt; &#34;)
+            print()
 
-        msg = &#34;Too Low&#34;
-        if a_number == self.the_number:
-            msg = &#34;Correct&#34;
-        elif a_number &gt; self.the_number:
-            msg = &#34;Too High&#34;
+            match choice:
+                case &#34;1&#34;:
+                    Game.game_menu(player)
 
-        return msg</code></pre>
+                case &#34;2&#34;:
+                    Game.difficulty_menu()
+
+                case &#34;3&#34;:
+                    Leaderboard.print_leaderboard()
+
+                case &#34;4&#34;:
+                    new_username = Game.check_valid_user()
+                    player.change_name(new_username)
+
+                case &#34;5&#34;:
+                    print(f&#34;{&#39;╭&#39;}{&#39;─&#39; * 48}{&#39;╮&#39;}&#34;)
+                    print(f&#34;{&#39;│&#39;}{&#39;RULES&#39; :^48}{&#39;│&#39;}&#34;)
+                    print(Game.rules())
+                    print(f&#34;{&#39;╰&#39;}{&#39;─&#39; * 48}{&#39;╯&#39;}\n&#34;)
+
+                case &#34;6&#34;:
+                    keep_running = False
+                    Intelligence.change_difficulty(&#34;EASY&#34;)
+
+                case _:
+                    print(f&#34;{&#39;╭&#39; :&gt;5}{&#39;─&#39; * 23}{&#39;╮&#39;}&#34;)
+                    print(f&#34;{&#39;│&#39; :&gt;5}{&#39;Not a valid choice&#39; :^23}{&#39;│&#39;}&#34;)
+                    print(f&#34;{&#39;╰&#39; :&gt;5}{&#39;─&#39; * 23}{&#39;╯&#39;}\n&#34;)
+
+    def login():
+        &#34;&#34;&#34;Menu for login that checks if user exists.&#34;&#34;&#34;
+        keep_running = True
+        player = &#34;&#34;
+
+        while keep_running:
+            username = input(&#34;Enter username: &#34;)
+            print()
+
+            for user in Players.get_players():
+                if username == user.get_name():
+                    player = user
+                    keep_running = False
+                    Game.user_menu(player)
+
+            if player == &#34;&#34;:
+                print(&#34;Not a valid user. Try again!\n&#34;)
+
+    def check_valid_user():
+        &#34;&#34;&#34;Checks if a desired username is within the rules and not already in use.&#34;&#34;&#34;
+        keep_running = True
+
+        while keep_running:
+            new_username = True
+            username = input(&#34;Enter desired username (Max 10 characters long): &#34;)
+            print()
+
+            for user in Players.get_players():
+                if username == user.get_name():
+                    new_username = False
+
+            if not username or username.isspace():
+                print(&#34;Name cant be empty\n&#34;)
+            elif len(username) &gt; 10:
+                print(&#34;Name is too long. Max lenght is 10.\n&#34;)
+            elif not new_username:
+                print(&#34;User already exists. Try again!\n&#34;)
+            else:
+                return username
+
+    def create_user():
+        &#34;&#34;&#34;Creates a new player.&#34;&#34;&#34;
+        username = Game.check_valid_user()
+
+        player = Player(username)
+        Players.add_player(player)
+        Game.user_menu(player)
+
+    def login_menu():
+        &#34;&#34;&#34;Menu for sign in and user creation.&#34;&#34;&#34;
+        Players.load_players()
+        keep_running = True
+
+        while keep_running:
+            print(f&#34;{&#39;╭&#39;}{&#39;─&#39; * 31}{&#39;╮&#39;}&#34;)
+            print(f&#34;{&#39;│&#39; :&lt;9}{&#39;1. Sign in&#39; :&lt;23}{&#39;│&#39;}&#34;)
+            print(f&#34;{&#39;│&#39; :&lt;9}{&#39;2. Create user&#39; :&lt;23}{&#39;│&#39;}&#34;)
+            print(f&#34;{&#39;│&#39; :&lt;9}{&#39;3. Exit Game&#39; :&lt;23}{&#39;│&#39;}&#34;)
+            print(f&#34;{&#39;╰&#39;}{&#39;─&#39; * 31}{&#39;╯&#39;}\n&#34;)
+            choice = input(&#34;&gt;&gt; &#34;)
+            print()
+
+            match choice:
+                case &#34;1&#34;:
+                    Game.login()
+
+                case &#34;2&#34;:
+                    Game.create_user()
+
+                case &#34;3&#34;:
+                    keep_running = False
+                    Players.save_players()
+                    print(&#39;Type &#34;exit&#34; to quit\n\nType &#34;start&#34; to start\n&#39;)
+
+                case _:
+                    print(f&#34;{&#39;╭&#39; :&gt;5}{&#39;─&#39; * 23}{&#39;╮&#39;}&#34;)
+                    print(f&#34;{&#39;│&#39; :&gt;5}{&#39;Not a valid choice&#39; :^23}{&#39;│&#39;}&#34;)
+                    print(f&#34;{&#39;╰&#39; :&gt;5}{&#39;─&#39; * 23}{&#39;╯&#39;}\n&#34;)
+
+    def reset_game_scores(player):
+        &#34;&#34;&#34;Resets computer and players game score.&#34;&#34;&#34;
+        player.reset_game_total()
+        player.reset_round_total()
+        Intelligence.reset_game_total()
+        Intelligence.reset_round_total()
+
+    def print_scoreboard(player):
+        &#34;&#34;&#34;Outputs the scoreboard.&#34;&#34;&#34;
+        print(f&#34;{&#39;╭&#39;}{&#39;─&#39; * 31}{&#39;╮&#39;}&#34;)
+        print(
+            f&#34;{&#39;│&#39;}{&#39;&#39; :&gt;7}{player.get_name() :^12}{Intelligence.get_difficulty_level() :^12}{&#39;│&#39;}&#34;
+        )
+        print(
+            f&#34;{&#39;│&#39;}{&#39;Game:&#39; :&gt;7}{player.get_game_total() :^12}{Intelligence.get_game_total() :^12}{&#39;│&#39;}&#34;
+        )
+        print(
+            f&#34;{&#39;│&#39;}{&#39;Round:&#39; :&gt;7}{player.get_round_total() :^12}{Intelligence.get_round_total() :^12}{&#39;│&#39;}&#34;
+        )
+        print(f&#34;{&#39;╰&#39;}{&#39;─&#39; * 31}{&#39;╯&#39;}\n&#34;)
+
+    def game_menu(player):
+        &#34;&#34;&#34;Menu used during gameplay and all actions needed during the game.&#34;&#34;&#34;
+        cheat = False
+        keep_running = True
+        user_type = &#34;PLAYER&#34;
+
+        while keep_running:
+            Game.print_scoreboard(player)
+
+            print(f&#34;{&#39;╭&#39;}{&#39;─&#39; * 31}{&#39;╮&#39;}&#34;)
+            print(f&#34;{&#39;│&#39; :&lt;9}{&#39;1. Roll Dice&#39; :&lt;23}{&#39;│&#39;}&#34;)
+            print(f&#34;{&#39;│&#39; :&lt;9}{&#39;2. Hold&#39; :&lt;23}{&#39;│&#39;}&#34;)
+            print(f&#34;{&#39;│&#39; :&lt;9}{&#39;3. Toggle Cheat&#39; :&lt;23}{&#39;│&#39;}&#34;)
+            print(f&#34;{&#39;│&#39; :&lt;9}{&#39;4. Stop game&#39; :&lt;23}{&#39;│&#39;}&#34;)
+            print(f&#34;{&#39;╰&#39;}{&#39;─&#39; * 31}{&#39;╯&#39;}\n&#34;)
+            choice = input(&#34;&gt;&gt; &#34;)
+            print()
+
+            match choice:
+                case &#34;1&#34;:
+                    round_total = Dice.roll_dice(player.get_round_total(), cheat)
+                    player.update_round_total(round_total)
+                    if round_total == 0:
+                        user_type = &#34;COMPUTER&#34;
+
+                case &#34;2&#34;:
+                    player.add_round_to_game_total()
+                    player.reset_round_total()
+                    user_type = &#34;COMPUTER&#34;
+
+                case &#34;3&#34;:
+                    if cheat:
+                        print(f&#34;{&#39;╭&#39; :&gt;9}{&#39;─&#39; * 15}{&#39;╮&#39;}&#34;)
+                        print(f&#34;{&#39;│&#39; :&gt;9}{&#39;Cheat off&#39; :^15}{&#39;│&#39;}&#34;)
+                        print(f&#34;{&#39;╰&#39; :&gt;9}{&#39;─&#39; * 15}{&#39;╯&#39;}\n&#34;)
+                        cheat = False
+                    else:
+                        print(f&#34;{&#39;╭&#39; :&gt;9}{&#39;─&#39; * 15}{&#39;╮&#39;}&#34;)
+                        print(f&#34;{&#39;│&#39; :&gt;9}{&#39;Cheat on&#39; :^15}{&#39;│&#39;}&#34;)
+                        print(f&#34;{&#39;╰&#39; :&gt;9}{&#39;─&#39; * 15}{&#39;╯&#39;}\n&#34;)
+                        cheat = True
+
+                case &#34;4&#34;:
+                    keep_running = False
+                    player.add_total_game()
+                    Game.reset_game_scores(player)
+
+                case _:
+                    print(f&#34;{&#39;╭&#39; :&gt;5}{&#39;─&#39; * 23}{&#39;╮&#39;}&#34;)
+                    print(f&#34;{&#39;│&#39; :&gt;5}{&#39;Not a valid choice&#39; :^23}{&#39;│&#39;}&#34;)
+                    print(f&#34;{&#39;╰&#39; :&gt;5}{&#39;─&#39; * 23}{&#39;╯&#39;}\n&#34;)
+
+            if player.get_game_total() &gt;= 100:
+                keep_running = False
+                Game.reset_game_scores(player)
+                print(f&#34;{&#39;╭&#39; :&gt;9}{&#39;─&#39; * 15}{&#39;╮&#39;}&#34;)
+                print(f&#34;{&#39;│&#39; :&gt;9}{&#39;You Won!&#39; :^15}{&#39;│&#39;}&#34;)
+                print(f&#34;{&#39;╰&#39; :&gt;9}{&#39;─&#39; * 15}{&#39;╯&#39;}&#34;)
+                player.add_total_game()
+                player.add_win()
+                break
+
+            if user_type == &#34;COMPUTER&#34;:
+                Intelligence.check_and_play_selected_difficulty()
+                user_type = &#34;PLAYER&#34;
+
+            if Intelligence.get_game_total() &gt;= 100:
+                keep_running = False
+                Game.reset_game_scores(player)
+                print(f&#34;{&#39;╭&#39; :&gt;9}{&#39;─&#39; * 15}{&#39;╮&#39;}&#34;)
+                print(f&#34;{&#39;│&#39; :&gt;9}{&#39;Computer Won!&#39; :^15}{&#39;│&#39;}&#34;)
+                print(f&#34;{&#39;╰&#39; :&gt;9}{&#39;─&#39; * 15}{&#39;╯&#39;}&#34;)
+                player.add_total_game()
+                break</code></pre>
 </details>
-<h3>Class variables</h3>
-<dl>
-<dt id="game.Game.high_number"><code class="name">var <span class="ident">high_number</span></code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-<dt id="game.Game.low_number"><code class="name">var <span class="ident">low_number</span></code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-<dt id="game.Game.the_number"><code class="name">var <span class="ident">the_number</span></code></dt>
-<dd>
-<div class="desc"></div>
-</dd>
-</dl>
+<h3>Ancestors</h3>
+<ul class="hlist">
+<li>cmd.Cmd</li>
+</ul>
 <h3>Methods</h3>
 <dl>
-<dt id="game.Game.cheat"><code class="name flex">
-<span>def <span class="ident">cheat</span></span>(<span>self)</span>
+<dt id="game.Game.check_valid_user"><code class="name flex">
+<span>def <span class="ident">check_valid_user</span></span>(<span>)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Get the number.</p></div>
+<div class="desc"><p>Checks if a desired username is within the rules and not already in use.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def cheat(self):
-    &#34;&#34;&#34;Get the number.&#34;&#34;&#34;
-    return self.the_number</code></pre>
+<pre><code class="python">def check_valid_user():
+    &#34;&#34;&#34;Checks if a desired username is within the rules and not already in use.&#34;&#34;&#34;
+    keep_running = True
+
+    while keep_running:
+        new_username = True
+        username = input(&#34;Enter desired username (Max 10 characters long): &#34;)
+        print()
+
+        for user in Players.get_players():
+            if username == user.get_name():
+                new_username = False
+
+        if not username or username.isspace():
+            print(&#34;Name cant be empty\n&#34;)
+        elif len(username) &gt; 10:
+            print(&#34;Name is too long. Max lenght is 10.\n&#34;)
+        elif not new_username:
+            print(&#34;User already exists. Try again!\n&#34;)
+        else:
+            return username</code></pre>
 </details>
 </dd>
-<dt id="game.Game.guess"><code class="name flex">
-<span>def <span class="ident">guess</span></span>(<span>self, a_number)</span>
+<dt id="game.Game.create_user"><code class="name flex">
+<span>def <span class="ident">create_user</span></span>(<span>)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Check it the guess is correct, higher or lower than the actual number.</p>
-<p>Raise an exception if the number is out of range.
-Raise an exception if the number is not an integer.</p></div>
+<div class="desc"><p>Creates a new player.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def guess(self, a_number):
-    &#34;&#34;&#34;
-    Check it the guess is correct, higher or lower than the actual number.
+<pre><code class="python">def create_user():
+    &#34;&#34;&#34;Creates a new player.&#34;&#34;&#34;
+    username = Game.check_valid_user()
 
-    Raise an exception if the number is out of range.
-    Raise an exception if the number is not an integer.
-    &#34;&#34;&#34;
-    if not isinstance(a_number, int):
-        raise TypeError(&#34;The number should be an integer.&#34;)
-
-    if not self.low_number &lt;= a_number &lt;= self.high_number:
-        raise ValueError(&#34;The number is higher/lower than max/min value.&#34;)
-
-    msg = &#34;Too Low&#34;
-    if a_number == self.the_number:
-        msg = &#34;Correct&#34;
-    elif a_number &gt; self.the_number:
-        msg = &#34;Too High&#34;
-
-    return msg</code></pre>
+    player = Player(username)
+    Players.add_player(player)
+    Game.user_menu(player)</code></pre>
 </details>
 </dd>
-<dt id="game.Game.high"><code class="name flex">
-<span>def <span class="ident">high</span></span>(<span>self)</span>
+<dt id="game.Game.difficulty_menu"><code class="name flex">
+<span>def <span class="ident">difficulty_menu</span></span>(<span>)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Get the highest number possible.</p></div>
+<div class="desc"><p>Menu for difficulty selection.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def high(self):
-    &#34;&#34;&#34;Get the highest number possible.&#34;&#34;&#34;
-    return self.high_number</code></pre>
+<pre><code class="python">def difficulty_menu():
+    &#34;&#34;&#34;Menu for difficulty selection.&#34;&#34;&#34;
+    keep_running = True
+
+    while keep_running:
+        print(f&#34;{&#39;╭&#39;}{&#39;─&#39; * 31}{&#39;╮&#39;}&#34;)
+        print(f&#34;{&#39;│&#39; :&lt;9}{&#39;1. Easy&#39; :&lt;23}{&#39;│&#39;}&#34;)
+        print(f&#34;{&#39;│&#39; :&lt;9}{&#39;2. Medium&#39; :&lt;23}{&#39;│&#39;}&#34;)
+        print(f&#34;{&#39;│&#39; :&lt;9}{&#39;3. Hard&#39; :&lt;23}{&#39;│&#39;}&#34;)
+        print(f&#34;{&#39;╰&#39;}{&#39;─&#39; * 31}{&#39;╯&#39;}\n&#34;)
+        choice = input(&#34;&gt;&gt; &#34;)
+        print()
+
+        match choice:
+            case &#34;1&#34;:
+                Intelligence.change_difficulty(&#34;EASY&#34;)
+                keep_running = False
+
+            case &#34;2&#34;:
+                Intelligence.change_difficulty(&#34;MEDIUM&#34;)
+                keep_running = False
+
+            case &#34;3&#34;:
+                Intelligence.change_difficulty(&#34;HARD&#34;)
+                keep_running = False
+
+            case _:
+                print(f&#34;{&#39;╭&#39; :&gt;5}{&#39;─&#39; * 23}{&#39;╮&#39;}&#34;)
+                print(f&#34;{&#39;│&#39; :&gt;5}{&#39;Not a valid choice&#39; :^23}{&#39;│&#39;}&#34;)
+                print(f&#34;{&#39;╰&#39; :&gt;5}{&#39;─&#39; * 23}{&#39;╯&#39;}\n&#34;)</code></pre>
 </details>
 </dd>
-<dt id="game.Game.low"><code class="name flex">
-<span>def <span class="ident">low</span></span>(<span>self)</span>
+<dt id="game.Game.game_menu"><code class="name flex">
+<span>def <span class="ident">game_menu</span></span>(<span>player)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Get the lowest number possible.</p></div>
+<div class="desc"><p>Menu used during gameplay and all actions needed during the game.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def low(self):
-    &#34;&#34;&#34;Get the lowest number possible.&#34;&#34;&#34;
-    return self.low_number</code></pre>
+<pre><code class="python">def game_menu(player):
+    &#34;&#34;&#34;Menu used during gameplay and all actions needed during the game.&#34;&#34;&#34;
+    cheat = False
+    keep_running = True
+    user_type = &#34;PLAYER&#34;
+
+    while keep_running:
+        Game.print_scoreboard(player)
+
+        print(f&#34;{&#39;╭&#39;}{&#39;─&#39; * 31}{&#39;╮&#39;}&#34;)
+        print(f&#34;{&#39;│&#39; :&lt;9}{&#39;1. Roll Dice&#39; :&lt;23}{&#39;│&#39;}&#34;)
+        print(f&#34;{&#39;│&#39; :&lt;9}{&#39;2. Hold&#39; :&lt;23}{&#39;│&#39;}&#34;)
+        print(f&#34;{&#39;│&#39; :&lt;9}{&#39;3. Toggle Cheat&#39; :&lt;23}{&#39;│&#39;}&#34;)
+        print(f&#34;{&#39;│&#39; :&lt;9}{&#39;4. Stop game&#39; :&lt;23}{&#39;│&#39;}&#34;)
+        print(f&#34;{&#39;╰&#39;}{&#39;─&#39; * 31}{&#39;╯&#39;}\n&#34;)
+        choice = input(&#34;&gt;&gt; &#34;)
+        print()
+
+        match choice:
+            case &#34;1&#34;:
+                round_total = Dice.roll_dice(player.get_round_total(), cheat)
+                player.update_round_total(round_total)
+                if round_total == 0:
+                    user_type = &#34;COMPUTER&#34;
+
+            case &#34;2&#34;:
+                player.add_round_to_game_total()
+                player.reset_round_total()
+                user_type = &#34;COMPUTER&#34;
+
+            case &#34;3&#34;:
+                if cheat:
+                    print(f&#34;{&#39;╭&#39; :&gt;9}{&#39;─&#39; * 15}{&#39;╮&#39;}&#34;)
+                    print(f&#34;{&#39;│&#39; :&gt;9}{&#39;Cheat off&#39; :^15}{&#39;│&#39;}&#34;)
+                    print(f&#34;{&#39;╰&#39; :&gt;9}{&#39;─&#39; * 15}{&#39;╯&#39;}\n&#34;)
+                    cheat = False
+                else:
+                    print(f&#34;{&#39;╭&#39; :&gt;9}{&#39;─&#39; * 15}{&#39;╮&#39;}&#34;)
+                    print(f&#34;{&#39;│&#39; :&gt;9}{&#39;Cheat on&#39; :^15}{&#39;│&#39;}&#34;)
+                    print(f&#34;{&#39;╰&#39; :&gt;9}{&#39;─&#39; * 15}{&#39;╯&#39;}\n&#34;)
+                    cheat = True
+
+            case &#34;4&#34;:
+                keep_running = False
+                player.add_total_game()
+                Game.reset_game_scores(player)
+
+            case _:
+                print(f&#34;{&#39;╭&#39; :&gt;5}{&#39;─&#39; * 23}{&#39;╮&#39;}&#34;)
+                print(f&#34;{&#39;│&#39; :&gt;5}{&#39;Not a valid choice&#39; :^23}{&#39;│&#39;}&#34;)
+                print(f&#34;{&#39;╰&#39; :&gt;5}{&#39;─&#39; * 23}{&#39;╯&#39;}\n&#34;)
+
+        if player.get_game_total() &gt;= 100:
+            keep_running = False
+            Game.reset_game_scores(player)
+            print(f&#34;{&#39;╭&#39; :&gt;9}{&#39;─&#39; * 15}{&#39;╮&#39;}&#34;)
+            print(f&#34;{&#39;│&#39; :&gt;9}{&#39;You Won!&#39; :^15}{&#39;│&#39;}&#34;)
+            print(f&#34;{&#39;╰&#39; :&gt;9}{&#39;─&#39; * 15}{&#39;╯&#39;}&#34;)
+            player.add_total_game()
+            player.add_win()
+            break
+
+        if user_type == &#34;COMPUTER&#34;:
+            Intelligence.check_and_play_selected_difficulty()
+            user_type = &#34;PLAYER&#34;
+
+        if Intelligence.get_game_total() &gt;= 100:
+            keep_running = False
+            Game.reset_game_scores(player)
+            print(f&#34;{&#39;╭&#39; :&gt;9}{&#39;─&#39; * 15}{&#39;╮&#39;}&#34;)
+            print(f&#34;{&#39;│&#39; :&gt;9}{&#39;Computer Won!&#39; :^15}{&#39;│&#39;}&#34;)
+            print(f&#34;{&#39;╰&#39; :&gt;9}{&#39;─&#39; * 15}{&#39;╯&#39;}&#34;)
+            player.add_total_game()
+            break</code></pre>
 </details>
 </dd>
-<dt id="game.Game.start"><code class="name flex">
-<span>def <span class="ident">start</span></span>(<span>self)</span>
+<dt id="game.Game.login"><code class="name flex">
+<span>def <span class="ident">login</span></span>(<span>)</span>
 </code></dt>
 <dd>
-<div class="desc"><p>Start the game and randomize a new number.</p></div>
+<div class="desc"><p>Menu for login that checks if user exists.</p></div>
 <details class="source">
 <summary>
 <span>Expand source code</span>
 </summary>
-<pre><code class="python">def start(self):
-    &#34;&#34;&#34;Start the game and randomize a new number.&#34;&#34;&#34;
-    self.the_number = random.randint(self.low_number, self.high_number)</code></pre>
+<pre><code class="python">def login():
+    &#34;&#34;&#34;Menu for login that checks if user exists.&#34;&#34;&#34;
+    keep_running = True
+    player = &#34;&#34;
+
+    while keep_running:
+        username = input(&#34;Enter username: &#34;)
+        print()
+
+        for user in Players.get_players():
+            if username == user.get_name():
+                player = user
+                keep_running = False
+                Game.user_menu(player)
+
+        if player == &#34;&#34;:
+            print(&#34;Not a valid user. Try again!\n&#34;)</code></pre>
+</details>
+</dd>
+<dt id="game.Game.login_menu"><code class="name flex">
+<span>def <span class="ident">login_menu</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Menu for sign in and user creation.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def login_menu():
+    &#34;&#34;&#34;Menu for sign in and user creation.&#34;&#34;&#34;
+    Players.load_players()
+    keep_running = True
+
+    while keep_running:
+        print(f&#34;{&#39;╭&#39;}{&#39;─&#39; * 31}{&#39;╮&#39;}&#34;)
+        print(f&#34;{&#39;│&#39; :&lt;9}{&#39;1. Sign in&#39; :&lt;23}{&#39;│&#39;}&#34;)
+        print(f&#34;{&#39;│&#39; :&lt;9}{&#39;2. Create user&#39; :&lt;23}{&#39;│&#39;}&#34;)
+        print(f&#34;{&#39;│&#39; :&lt;9}{&#39;3. Exit Game&#39; :&lt;23}{&#39;│&#39;}&#34;)
+        print(f&#34;{&#39;╰&#39;}{&#39;─&#39; * 31}{&#39;╯&#39;}\n&#34;)
+        choice = input(&#34;&gt;&gt; &#34;)
+        print()
+
+        match choice:
+            case &#34;1&#34;:
+                Game.login()
+
+            case &#34;2&#34;:
+                Game.create_user()
+
+            case &#34;3&#34;:
+                keep_running = False
+                Players.save_players()
+                print(&#39;Type &#34;exit&#34; to quit\n\nType &#34;start&#34; to start\n&#39;)
+
+            case _:
+                print(f&#34;{&#39;╭&#39; :&gt;5}{&#39;─&#39; * 23}{&#39;╮&#39;}&#34;)
+                print(f&#34;{&#39;│&#39; :&gt;5}{&#39;Not a valid choice&#39; :^23}{&#39;│&#39;}&#34;)
+                print(f&#34;{&#39;╰&#39; :&gt;5}{&#39;─&#39; * 23}{&#39;╯&#39;}\n&#34;)</code></pre>
+</details>
+</dd>
+<dt id="game.Game.print_scoreboard"><code class="name flex">
+<span>def <span class="ident">print_scoreboard</span></span>(<span>player)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Outputs the scoreboard.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def print_scoreboard(player):
+    &#34;&#34;&#34;Outputs the scoreboard.&#34;&#34;&#34;
+    print(f&#34;{&#39;╭&#39;}{&#39;─&#39; * 31}{&#39;╮&#39;}&#34;)
+    print(
+        f&#34;{&#39;│&#39;}{&#39;&#39; :&gt;7}{player.get_name() :^12}{Intelligence.get_difficulty_level() :^12}{&#39;│&#39;}&#34;
+    )
+    print(
+        f&#34;{&#39;│&#39;}{&#39;Game:&#39; :&gt;7}{player.get_game_total() :^12}{Intelligence.get_game_total() :^12}{&#39;│&#39;}&#34;
+    )
+    print(
+        f&#34;{&#39;│&#39;}{&#39;Round:&#39; :&gt;7}{player.get_round_total() :^12}{Intelligence.get_round_total() :^12}{&#39;│&#39;}&#34;
+    )
+    print(f&#34;{&#39;╰&#39;}{&#39;─&#39; * 31}{&#39;╯&#39;}\n&#34;)</code></pre>
+</details>
+</dd>
+<dt id="game.Game.reset_game_scores"><code class="name flex">
+<span>def <span class="ident">reset_game_scores</span></span>(<span>player)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Resets computer and players game score.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def reset_game_scores(player):
+    &#34;&#34;&#34;Resets computer and players game score.&#34;&#34;&#34;
+    player.reset_game_total()
+    player.reset_round_total()
+    Intelligence.reset_game_total()
+    Intelligence.reset_round_total()</code></pre>
+</details>
+</dd>
+<dt id="game.Game.rules"><code class="name flex">
+<span>def <span class="ident">rules</span></span>(<span>)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Get rules of the game.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">    def rules():
+        &#34;&#34;&#34;Get rules of the game.&#34;&#34;&#34;
+        return &#34;&#34;&#34;│                                                │
+│ Each turn, a player repeatedly rolls a die     │
+│ until either a 1 is rolled or the player       │
+│ decides to &#34;hold&#34;                              │
+│                                                │
+│ ● If the player rolls a 1, they score nothing  │
+│ and it becomes the next player&#39;s turn          │
+│                                                │
+│ ● If the player rolls any other number, it is  │
+│ added to their turn total and the player&#39;s     │
+│ turn continues.                                │
+│                                                │
+│ ● If a player chooses to &#34;hold&#34;, their turn    │
+│ total is added to their score, and it becomes  │
+│ the next player&#39;s turn.                        │
+│                                                │
+│ ● The first player to score 100 or more        │
+│ points wins.                                   │&#34;&#34;&#34;</code></pre>
+</details>
+</dd>
+<dt id="game.Game.user_menu"><code class="name flex">
+<span>def <span class="ident">user_menu</span></span>(<span>player)</span>
+</code></dt>
+<dd>
+<div class="desc"><p>Menu for all user actions.</p></div>
+<details class="source">
+<summary>
+<span>Expand source code</span>
+</summary>
+<pre><code class="python">def user_menu(player):
+    &#34;&#34;&#34;Menu for all user actions.&#34;&#34;&#34;
+    keep_running = True
+
+    while keep_running:
+        print(f&#34;{&#39;╭&#39;}{&#39;─&#39; * 31}{&#39;╮&#39;}&#34;)
+        print(f&#34;{&#39;│&#39; :&lt;9}{&#39;1. Play game&#39; :&lt;23}{&#39;│&#39;}&#34;)
+        print(f&#34;{&#39;│&#39; :&lt;9}{&#39;2. Set difficulty&#39; :&lt;23}{&#39;│&#39;}&#34;)
+        print(f&#34;{&#39;│&#39; :&lt;9}{&#39;3. Leaderboard&#39; :&lt;23}{&#39;│&#39;}&#34;)
+        print(f&#34;{&#39;│&#39; :&lt;9}{&#39;4. Change name&#39; :&lt;23}{&#39;│&#39;}&#34;)
+        print(f&#34;{&#39;│&#39; :&lt;9}{&#39;5. Rules&#39; :&lt;23}{&#39;│&#39;}&#34;)
+        print(f&#34;{&#39;│&#39; :&lt;9}{&#39;6. Sign out&#39; :&lt;23}{&#39;│&#39;}&#34;)
+        print(f&#34;{&#39;╰&#39;}{&#39;─&#39; * 31}{&#39;╯&#39;}\n&#34;)
+        choice = input(&#34;&gt;&gt; &#34;)
+        print()
+
+        match choice:
+            case &#34;1&#34;:
+                Game.game_menu(player)
+
+            case &#34;2&#34;:
+                Game.difficulty_menu()
+
+            case &#34;3&#34;:
+                Leaderboard.print_leaderboard()
+
+            case &#34;4&#34;:
+                new_username = Game.check_valid_user()
+                player.change_name(new_username)
+
+            case &#34;5&#34;:
+                print(f&#34;{&#39;╭&#39;}{&#39;─&#39; * 48}{&#39;╮&#39;}&#34;)
+                print(f&#34;{&#39;│&#39;}{&#39;RULES&#39; :^48}{&#39;│&#39;}&#34;)
+                print(Game.rules())
+                print(f&#34;{&#39;╰&#39;}{&#39;─&#39; * 48}{&#39;╯&#39;}\n&#34;)
+
+            case &#34;6&#34;:
+                keep_running = False
+                Intelligence.change_difficulty(&#34;EASY&#34;)
+
+            case _:
+                print(f&#34;{&#39;╭&#39; :&gt;5}{&#39;─&#39; * 23}{&#39;╮&#39;}&#34;)
+                print(f&#34;{&#39;│&#39; :&gt;5}{&#39;Not a valid choice&#39; :^23}{&#39;│&#39;}&#34;)
+                print(f&#34;{&#39;╰&#39; :&gt;5}{&#39;─&#39; * 23}{&#39;╯&#39;}\n&#34;)</code></pre>
 </details>
 </dd>
 </dl>
@@ -273,14 +1008,16 @@ Raise an exception if the number is not an integer.</p></div>
 <li>
 <h4><code><a title="game.Game" href="#game.Game">Game</a></code></h4>
 <ul class="two-column">
-<li><code><a title="game.Game.cheat" href="#game.Game.cheat">cheat</a></code></li>
-<li><code><a title="game.Game.guess" href="#game.Game.guess">guess</a></code></li>
-<li><code><a title="game.Game.high" href="#game.Game.high">high</a></code></li>
-<li><code><a title="game.Game.high_number" href="#game.Game.high_number">high_number</a></code></li>
-<li><code><a title="game.Game.low" href="#game.Game.low">low</a></code></li>
-<li><code><a title="game.Game.low_number" href="#game.Game.low_number">low_number</a></code></li>
-<li><code><a title="game.Game.start" href="#game.Game.start">start</a></code></li>
-<li><code><a title="game.Game.the_number" href="#game.Game.the_number">the_number</a></code></li>
+<li><code><a title="game.Game.check_valid_user" href="#game.Game.check_valid_user">check_valid_user</a></code></li>
+<li><code><a title="game.Game.create_user" href="#game.Game.create_user">create_user</a></code></li>
+<li><code><a title="game.Game.difficulty_menu" href="#game.Game.difficulty_menu">difficulty_menu</a></code></li>
+<li><code><a title="game.Game.game_menu" href="#game.Game.game_menu">game_menu</a></code></li>
+<li><code><a title="game.Game.login" href="#game.Game.login">login</a></code></li>
+<li><code><a title="game.Game.login_menu" href="#game.Game.login_menu">login_menu</a></code></li>
+<li><code><a title="game.Game.print_scoreboard" href="#game.Game.print_scoreboard">print_scoreboard</a></code></li>
+<li><code><a title="game.Game.reset_game_scores" href="#game.Game.reset_game_scores">reset_game_scores</a></code></li>
+<li><code><a title="game.Game.rules" href="#game.Game.rules">rules</a></code></li>
+<li><code><a title="game.Game.user_menu" href="#game.Game.user_menu">user_menu</a></code></li>
 </ul>
 </li>
 </ul>

@@ -3,17 +3,18 @@ import io
 from unittest.mock import patch
 from intelligence import Intelligence
 
+
 class TestIntelligenceClass(unittest.TestCase):
     def check_and_play_selected_difficulty(self):
         """Test check difficulty and play the game accordingly."""
         Intelligence.difficulty_easy = True
         Intelligence.difficulty_medium = False
         Intelligence.difficulty_hard = False
-        
+
         Intelligence.difficulty_easy = False
         Intelligence.difficulty_medium = True
         Intelligence.difficulty_hard = False
-        
+
         Intelligence.difficulty_easy = False
         Intelligence.difficulty_medium = False
         Intelligence.difficulty_hard = True
@@ -30,7 +31,7 @@ class TestIntelligenceClass(unittest.TestCase):
             if Intelligence.round_total != 0:
                 test_succes = True
                 break
-        
+
         self.assertTrue(test_succes)
 
     def test_reset_round_total(self):
@@ -42,7 +43,7 @@ class TestIntelligenceClass(unittest.TestCase):
 
         self.assertNotEqual(total_before, total_after)
         self.assertEqual(total_after, 0)
-    
+
     def test_reset_game_total(self):
         """Test reset the total game score."""
         Intelligence.game_total = 5
@@ -52,7 +53,7 @@ class TestIntelligenceClass(unittest.TestCase):
 
         self.assertNotEqual(total_before, total_after)
         self.assertEqual(total_after, 0)
-    
+
     def test_change_difficulty(self):
         """Change difficulty level."""
         Intelligence.difficulty_easy = False
@@ -85,13 +86,13 @@ class TestIntelligenceClass(unittest.TestCase):
         Intelligence.difficulty_hard = False
         test_easy_result = Intelligence.get_difficulty_level()
         test_easy_expected = "Cpu Easy"
-        
+
         Intelligence.difficulty_easy = False
         Intelligence.difficulty_medium = True
         Intelligence.difficulty_hard = False
         test_medium_result = Intelligence.get_difficulty_level()
         test_medium_expected = "Cpu Medium"
-        
+
         Intelligence.difficulty_easy = False
         Intelligence.difficulty_medium = False
         Intelligence.difficulty_hard = True
@@ -116,7 +117,7 @@ class TestIntelligenceClass(unittest.TestCase):
         expected = 5
 
         self.assertEqual(result, expected)
-    
+
     def test_get_game_total(self):
         """Test get total game score."""
         Intelligence.game_total = 5

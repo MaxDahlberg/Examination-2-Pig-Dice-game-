@@ -16,7 +16,7 @@ class Players:
                 with open("players.bin", "rb") as players_file:
                     Players.players = pickle.load(players_file)
             except EOFError:
-                    Players.players = []
+                Players.players = []
         else:
             Players.players = []
 

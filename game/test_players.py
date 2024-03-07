@@ -3,6 +3,7 @@ import unittest
 import pickle
 from players import Players
 
+
 class TestPlayersClass(unittest.TestCase):
     def setUp(self):
         """Set up testing environment."""
@@ -32,6 +33,7 @@ class TestPlayersClass(unittest.TestCase):
             os.remove("players.bin")
         Players.load_players()
         self.assertEqual(Players.get_players(), [])
+
 
 if __name__ == "__main__":
     unittest.main()

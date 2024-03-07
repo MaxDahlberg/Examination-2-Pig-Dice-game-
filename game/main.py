@@ -13,10 +13,12 @@ class Main(cmd.Cmd):
         """Leave the game."""
         return True
 
+
 def main():
     """Execute the main program."""
     print('"start" to start the game\n\n"exit" to exit\n')
     Main().cmdloop()
+
 
 if __name__ == "__main__":
     main()

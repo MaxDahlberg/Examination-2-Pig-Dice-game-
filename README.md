@@ -1,3 +1,16 @@
+This project is a simple implementation of the dice game Pig. It contains the version that is played with one die.
+The game also has a computer player with three difficulties that can be selected and played against.
+The game also keeps and saves an active leaderboard over all the players that have played.
+
+
+Most of the game was simple to implement but we have decided to talk about how the three difficulties have been implemented.
+The "Hard" difficulty uses one of the game's optimal strategies which is to roll until a score of 25 and then hold.
+The "Easy" difficulty is a bit more simple. It will never roll more than two dice. On average this will result in a score of 7 per round and at max 12.
+It will on average take the easy difficulty, more than 15 turns to win the game. 
+Finally, the "medium" difficulty is implemented the same way as the "Hard" is.
+The only difference is that "Medium" always rolls until a score of 15.
+
+
 To start we first need to clone or download the project.
 This can be done by navigating to the green "code" button and selecting "download zip".
 Once the zip is downloaded it needs to be extracted.

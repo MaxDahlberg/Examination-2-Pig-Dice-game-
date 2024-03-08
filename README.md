@@ -3,6 +3,7 @@ This project is a simple implementation of the dice game Pig. It contains the ve
 The game also has a computer player with three difficulties that can be selected and played against.
 The game also keeps and saves an active leaderboard over all the players that have played.
 
+<a href="https://en.wikipedia.org/wiki/Pig_(dice_game)">Read more about the game and its strategies here</a>
 
 <H1>Implementation of difficulties</H1>
 Most of the game was simple to implement but we have decided to talk about how the three difficulties have been implemented.
